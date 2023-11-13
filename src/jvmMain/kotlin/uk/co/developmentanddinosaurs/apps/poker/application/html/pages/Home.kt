@@ -1,6 +1,9 @@
 package uk.co.developmentanddinosaurs.apps.poker.application.html.pages
 
 import kotlinx.html.*
+import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
+
+private val nameGenerator = NameGenerator()
 
 fun HTML.home() = run {
     head {
@@ -26,6 +29,9 @@ fun HTML.home() = run {
         div(classes = "container") {
             div(classes = "header") {
                 h1 { +"Prehistoric Planning Poker" }
+            }
+            div(classes = "content") {
+                p { +"Welcome ${nameGenerator.generateName()}, to Prehistoric Planning Poker!" }
             }
         }
     }

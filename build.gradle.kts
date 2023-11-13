@@ -45,7 +45,11 @@ kotlin {
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.641")
             }
         }
-        val jvmTest by getting
+        val jvmTest by getting {
+            dependencies {
+                implementation("io.kotest:kotest-runner-junit5:5.7.0")
+            }
+        }
     }
 }
 
