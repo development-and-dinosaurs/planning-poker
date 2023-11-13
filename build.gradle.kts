@@ -41,6 +41,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-server-netty:$ktorVersion")
+                implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.641")
             }
         }
         val jvmTest by getting

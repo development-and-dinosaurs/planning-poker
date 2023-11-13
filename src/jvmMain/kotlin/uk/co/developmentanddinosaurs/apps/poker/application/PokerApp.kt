@@ -2,9 +2,13 @@ package uk.co.developmentanddinosaurs.apps.poker.application
 
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
+import io.ktor.server.html.*
+import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
+import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
+import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.home
 
 /**
  * Entry point for the Poker application.
@@ -14,16 +18,20 @@ fun main() {
         connector {
             port = 8080
         }
-        module(Application::module)
+        module(Application::routing)
     }
     embeddedServer(Netty, environment).start(wait = true)
 }
 
-fun Application.module() {
+fun Application.routing() {
     routing {
-        get("/") {
-            call.respondText("Hello, world!")
+        get("/style.css") {
+            call.respondCss { style() }
         }
+        get("/") {
+            call.respondHtml { home() }
+        }
+        staticResources("/", "web")
     }
 }
 
