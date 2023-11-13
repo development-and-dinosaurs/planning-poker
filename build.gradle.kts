@@ -33,11 +33,16 @@ kotlin {
         }
     }
     sourceSets {
+        val ktorVersion = "2.3.6"
         val commonMain by getting
         val commonTest by getting
         val jsMain by getting
         val jsTest by getting
-        val jvmMain by getting
+        val jvmMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-server-netty:$ktorVersion")
+            }
+        }
         val jvmTest by getting
     }
 }
