@@ -9,6 +9,7 @@ import io.ktor.server.routing.*
 import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
 import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.home
+import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.howToPlay
 
 /**
  * Entry point for the Poker application.
@@ -30,6 +31,9 @@ fun Application.routing() {
         }
         get("/") {
             call.respondHtml { home() }
+        }
+        get("/how-to-play") {
+            call.respondHtml { howToPlay() }
         }
         staticResources("/", "web")
     }

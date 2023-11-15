@@ -4,6 +4,7 @@ import kotlinx.html.*
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.DinosaurCard
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.card
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.head
+import uk.co.developmentanddinosaurs.apps.poker.application.html.components.header
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
 
 private val nameGenerator = NameGenerator()
@@ -11,30 +12,7 @@ private val nameGenerator = NameGenerator()
 fun HTML.home() = run {
     head(title = "Prehistoric Planning Poker")
     body {
-        header {
-            nav {
-                div(classes = "nav-wrapper orange") {
-                    a(classes = "brand-logo") {
-                        href = "/"
-                        img {
-                            height = "64"
-                            src = "/poker-icon-small.png"
-                        }
-                    }
-                    ul(classes = "right hide-on-med-and-down") {
-                        li {
-                            a(href = "/how-to-play") { +"Learn How to Play" }
-                        }
-                        li {
-                            a(href = "/create-a-room") { +"Create a Room" }
-                        }
-                        li {
-                            a(href = "/about") { +"About" }
-                        }
-                    }
-                }
-            }
-        }
+        header(page = "home")
         div(classes = "frame") {
             div(classes = "container") {
                 div(classes = "header") {
@@ -76,6 +54,7 @@ fun HTML.home() = run {
                     div(classes = "row") {
                         div(classes = "col s6 l3 offset-l3") {
                             a(classes = "waves-effect waves-light btn-large orange") {
+                                href = "/how-to-play"
                                 +"How to play"
                             }
                         }
