@@ -54,7 +54,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("uk.co.developmentanddinosaurs.apps.poker.application.PokerServerKt")
+    mainClass.set("uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt")
 }
 
 tasks.named<Copy>("jvmProcessResources") {
@@ -70,7 +70,7 @@ tasks.named<JavaExec>("run") {
 tasks.named<Jar>("jvmJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerServerKt"
+        attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
     }
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
 }
