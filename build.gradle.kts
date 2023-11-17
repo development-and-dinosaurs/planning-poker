@@ -16,7 +16,7 @@ kotlin {
         binaries.executable()
         browser {
             distribution(Action {
-                outputDirectory = file("$projectDir/src/jvmMain/resources/web")
+                outputDirectory = file("$projectDir/build/processedResources/jvm/main/web")
             })
             commonWebpackConfig(Action {
                 cssSupport {
