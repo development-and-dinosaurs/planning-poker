@@ -60,6 +60,7 @@ fun HTML.home() = run {
                         }
                         div(classes = "col s6 l3") {
                             a(classes = "waves-effect waves-light btn-large orange") {
+                                id = "create-room"
                                 +"Create room"
                             }
                         }

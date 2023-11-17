@@ -14,13 +14,16 @@ fun FlowContent.header(page: String) = run {
                     }
                 }
                 ul(classes = "right hide-on-med-and-down") {
-                    li(classes = if(page == "how-to-play") "active" else "") {
+                    li(classes = if (page == "how-to-play") "active" else "") {
                         a(href = "/how-to-play") { +"Learn How to Play" }
                     }
                     li {
-                        a(href = "/create-a-room") { +"Create a Room" }
+                        a {
+                            id = "create-room-nav"
+                            +"Create a Room"
+                        }
                     }
-                    li(classes = if(page == "about") "active" else "") {
+                    li(classes = if (page == "about") "active" else "") {
                         a(href = "/about") { +"About" }
                     }
                 }

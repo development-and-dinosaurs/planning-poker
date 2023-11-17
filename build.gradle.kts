@@ -36,7 +36,13 @@ kotlin {
         val ktorVersion = "2.3.6"
         val commonMain by getting
         val commonTest by getting
-        val jsMain by getting
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.7.3")
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+            }
+        }
         val jsTest by getting
         val jvmMain by getting {
             dependencies {
@@ -48,6 +54,7 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation("io.kotest:kotest-runner-junit5:5.7.0")
+                implementation("io.mockk:mockk:1.13.8")
             }
         }
     }

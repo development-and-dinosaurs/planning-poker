@@ -16,6 +16,10 @@ fun HTML.head(title: String) = run {
             rel = "icon"
             href = "/images/cards/tyrannosaurus-rex.png"
         }
+        script {
+            type = "text/javascript"
+            src = "/planning-poker.js"
+        }
         title(title)
         meta {
             name = "viewport"
