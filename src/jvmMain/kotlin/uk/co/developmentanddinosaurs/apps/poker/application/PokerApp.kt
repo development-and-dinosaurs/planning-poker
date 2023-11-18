@@ -6,6 +6,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.callloging.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
@@ -35,6 +36,7 @@ fun main() {
 private val roomRepository = RoomRepository(NameGenerator())
 
 fun Application.plugins() {
+    install(CallLogging)
     install(WebSockets)
 }
 
