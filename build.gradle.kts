@@ -52,6 +52,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
                 implementation("io.ktor:ktor-server-websockets:$ktorVersion")
                 implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+                implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.641")
             }
         }
