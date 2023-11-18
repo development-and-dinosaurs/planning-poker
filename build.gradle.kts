@@ -41,6 +41,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.7.3")
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
+                implementation("io.ktor:ktor-client-websockets:$ktorVersion")
             }
         }
         val jsTest by getting
@@ -48,6 +49,7 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-server-netty:$ktorVersion")
                 implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
+                implementation("io.ktor:ktor-server-websockets:$ktorVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.641")
             }
         }

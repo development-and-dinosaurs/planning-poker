@@ -8,6 +8,8 @@ import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.websocket.*
+import kotlinx.coroutines.channels.consumeEach
 import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
 import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.home
@@ -24,12 +26,17 @@ fun main() {
         connector {
             port = 8080
         }
+        module(Application::plugins)
         module(Application::routing)
     }
     embeddedServer(Netty, environment).start(wait = true)
 }
 
 private val roomRepository = RoomRepository(NameGenerator())
+
+fun Application.plugins() {
+    install(WebSockets)
+}
 
 fun Application.routing() {
     routing {
@@ -47,9 +54,22 @@ fun Application.routing() {
             call.response.header("Location", "/rooms/${room.id}")
             call.respond(HttpStatusCode.Created)
         }
-        get("/rooms/{room}") {
-            val room = roomRepository.getRoom(call.parameters["room"]!!)
+        get("/rooms/{room-id}") {
+            val roomId = call.parameters["room-id"] ?: throw RuntimeException("Room ID cannot be null")
+            val room = roomRepository.getRoom(roomId)
             call.respondHtml { room(room.id.replace(Regex("(.)([A-Z])"), "$1 $2")) }
+        }
+        webSocket("/rooms/{room-id}/ws") {
+            val roomId = call.parameters["room-id"] ?: throw RuntimeException("Room ID cannot be null")
+            val room = roomRepository.getRoom(roomId)
+            try {
+                incoming.consumeEach {
+
+                }
+            } finally {
+
+            }
+
         }
         staticResources("/", "web")
     }
