@@ -1,23 +1,20 @@
 package uk.co.developmentanddinosaurs.apps.poker.application.html.pages
 
-import kotlinx.html.HTML
-import kotlinx.html.body
-import kotlinx.html.div
-import kotlinx.html.h1
+import kotlinx.html.*
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.DinosaurCard
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.card
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.head
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.header
 
 
-fun HTML.room(id: String) = run {
-    head(title = "$id | Prehistoric Planning Poker")
+fun HTML.room(roomId: String) = run {
+    head(title = "$roomId | Prehistoric Planning Poker")
     body {
-        header(page = id)
+        header(page = roomId)
         div(classes = "frame") {
             div(classes = "container") {
                 div(classes = "header") {
-                    h1 { +id }
+                    h1 { +roomId }
                 }
                 div(classes = "cards") {
                     div(classes = "row") {
@@ -27,6 +24,40 @@ fun HTML.room(id: String) = run {
                         card(DinosaurCard.TRICERATOPS)
                         card(DinosaurCard.TYRANNOSAURUS_REX)
                         card(DinosaurCard.METEOR)
+                    }
+                }
+                div(classes = "row") {
+                    div(classes = "col s6") {
+                        h2 { +"Players" }
+                    }
+                    div(classes = "col s6") {
+                        h2 { +"Stats" }
+                    }
+                    div(classes = "col s6") {
+                        table {
+                            thead {
+                                tr {
+                                    th { +"Player" }
+                                    th { +"Vote" }
+                                }
+                            }
+                            tbody {
+                                id = "players"
+                            }
+                        }
+                    }
+                    div(classes = "col s6") {
+                        table {
+                            thead {
+                                tr {
+                                    th { +"Estimate" }
+                                    th { +"Value" }
+                                }
+                            }
+                            tbody {
+                                id = "stats"
+                            }
+                        }
                     }
                 }
             }

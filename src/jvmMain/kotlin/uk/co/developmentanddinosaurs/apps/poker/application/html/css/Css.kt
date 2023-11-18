@@ -25,6 +25,7 @@ fun CssBuilder.style() = run {
     h2 {
         fontFamily = "Cormorant"
         fontSize = 3.rem
+        marginTop = 0.px
     }
     strong {
         fontWeight = FontWeight.bold

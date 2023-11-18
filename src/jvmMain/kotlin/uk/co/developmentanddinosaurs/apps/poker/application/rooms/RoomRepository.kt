@@ -4,7 +4,7 @@ import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerat
 
 class RoomRepository(private val nameGenerator: NameGenerator) {
 
-    private val rooms = mutableMapOf<String, Room>()
+    private val rooms = mutableMapOf<String, Room>("Test" to Room("Test"))
 
     fun createRoom(): Room {
         val name = generateUniqueName()
