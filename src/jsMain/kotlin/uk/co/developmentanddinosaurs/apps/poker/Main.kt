@@ -18,7 +18,6 @@ fun main() {
     })
 }
 
-
 fun setUpClickListeners() {
     document.getElementById("create-room")?.addEventListener("click", {
         MainScope().launch { createRoom() }
@@ -39,7 +38,6 @@ fun setUpCardClickListeners() {
 }
 
 suspend fun createRoom() {
-    console.log("Creating room")
     val response = httpClient.post("/rooms")
     window.location.href = response.headers["Location"] ?: ""
 }
