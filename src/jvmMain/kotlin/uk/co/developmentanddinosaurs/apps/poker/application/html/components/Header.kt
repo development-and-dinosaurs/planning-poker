@@ -10,7 +10,7 @@ fun FlowContent.header(page: String) = run {
                     href = "/"
                     img {
                         height = "64"
-                        src = "/poker-icon-small.png"
+                        src = "/logo.png"
                     }
                 }
                 ul(classes = "right hide-on-med-and-down") {
