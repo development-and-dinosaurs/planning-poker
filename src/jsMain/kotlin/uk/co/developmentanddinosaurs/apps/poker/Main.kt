@@ -29,7 +29,7 @@ fun setUpClickListeners() {
 
 fun setUpCardClickListeners() {
     val cards = document.getElementsByClassName("card").asList()
-    for (card in cards) {
+    cards.forEach { card ->
         card.addEventListener("click", {
             cards.forEach { it.removeClass("active") }
             card.addClass("active")
