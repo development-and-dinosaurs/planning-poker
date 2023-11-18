@@ -16,6 +16,9 @@ fun CssBuilder.style() = run {
         fontSize = 2.rem
         marginLeft = 5.px
     }
+    rule(".active") {
+        filter = "drop-shadow(0px 0px 5px #ff9800)"
+    }
     h1 {
         fontFamily = "Cormorant"
     }
