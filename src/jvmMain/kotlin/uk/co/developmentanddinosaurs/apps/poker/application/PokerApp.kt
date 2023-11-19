@@ -10,7 +10,9 @@ import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.defaultheaders.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.sessions.*
 import io.ktor.server.websocket.*
+import io.ktor.util.*
 import kotlinx.coroutines.channels.consumeEach
 import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
 import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
@@ -20,6 +22,8 @@ import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.room
 import uk.co.developmentanddinosaurs.apps.poker.application.rooms.RoomRepository
 import uk.co.developmentanddinosaurs.apps.poker.application.security.SslKeystore
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
+import uk.co.developmentanddinosaurs.apps.poker.application.sessions.PokerSession
+import kotlin.text.toCharArray
 
 /**
  * Entry point for the Poker application.
@@ -36,6 +40,7 @@ fun main() {
             keyStorePath = sslKeystore.file
         }
         module(Application::plugins)
+        module(Application::session)
         module(Application::routing)
     }
     embeddedServer(Netty, environment).start(wait = true)
@@ -49,13 +54,26 @@ fun Application.plugins() {
     install(WebSockets)
 }
 
+fun Application.session() {
+    install(Sessions) {
+        cookie<PokerSession>("PokerSession")
+    }
+    intercept(ApplicationCallPipeline.Plugins) {
+        if (call.sessions.get<PokerSession>() == null) {
+            call.sessions.set(PokerSession(generateNonce(), NameGenerator().generateName()))
+        }
+    }
+}
+
 fun Application.routing() {
     routing {
         get("/style.css") {
             call.respondCss { style() }
         }
         get("/") {
-            call.respondHtml { home() }
+            val session = call.sessions.get<PokerSession>() ?: throw RuntimeException("No session")
+            println(session.name)
+            call.respondHtml { home(session.name) }
         }
         get("/how-to-play") {
             call.respondHtml { howToPlay() }

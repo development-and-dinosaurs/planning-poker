@@ -7,9 +7,7 @@ import uk.co.developmentanddinosaurs.apps.poker.application.html.components.head
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.header
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
 
-private val nameGenerator = NameGenerator()
-
-fun HTML.home() = run {
+fun HTML.home(name: String) = run {
     head(title = "Prehistoric Planning Poker")
     body {
         header(page = "home")
@@ -21,7 +19,7 @@ fun HTML.home() = run {
                 div(classes = "content") {
                     p {
                         +"Welcome "
-                        strong { +nameGenerator.generateName() }
+                        strong { +name }
                         +", to Prehistoric Planning Poker!"
                     }
                 }
