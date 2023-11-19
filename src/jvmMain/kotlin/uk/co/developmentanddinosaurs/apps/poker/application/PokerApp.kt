@@ -18,15 +18,22 @@ import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.home
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.howToPlay
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.room
 import uk.co.developmentanddinosaurs.apps.poker.application.rooms.RoomRepository
+import uk.co.developmentanddinosaurs.apps.poker.application.security.SslKeystore
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
 
 /**
  * Entry point for the Poker application.
  */
 fun main() {
+    val sslKeystore = SslKeystore()
     val environment = applicationEngineEnvironment {
-        connector {
-            port = 8080
+        connector { }
+        sslConnector(
+            keyStore = sslKeystore.keyStore,
+            keyAlias = sslKeystore.alias,
+            keyStorePassword = { sslKeystore.password.toCharArray() },
+            privateKeyPassword = { sslKeystore.password.toCharArray() }) {
+            keyStorePath = sslKeystore.file
         }
         module(Application::plugins)
         module(Application::routing)
