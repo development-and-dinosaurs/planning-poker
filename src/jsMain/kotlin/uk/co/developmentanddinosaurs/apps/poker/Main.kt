@@ -9,7 +9,11 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.dom.addClass
 import kotlinx.dom.removeClass
+import kotlinx.serialization.json.Json
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
+import poker.events.Event
+import poker.models.Player
 
 val httpClient = HttpClient { install(WebSockets) }
 val webSocketClient = WebSocketClient(httpClient)
@@ -60,5 +64,38 @@ suspend fun initialiseWebSocketConnection() {
 }
 
 fun handleEvent(event: String) {
-    println(event)
+    val eventJson = try {
+        Json.decodeFromString<Event>(event)
+    } catch (e: Exception) {
+        println(e.message)
+        throw e
+    }
+    when (eventJson.type) {
+        "players" -> {
+            writePlayers(Json.decodeFromString(eventJson.contents))
+        }
+    }
+}
+
+fun writePlayers(players: List<Player>) {
+    val playersSection = document.getElementById("players") as HTMLElement
+    removePlayersFromSection(playersSection)
+    players.map { player ->
+        document.createElement("tr").apply {
+                appendChild(document.createElement("td").apply {
+                    textContent = player.name
+                })
+                appendChild(document.createElement("td").apply {
+                    textContent = "?"
+                })
+            }
+    }.forEach {
+        playersSection.appendChild(it)
+    }
+}
+
+fun removePlayersFromSection(playersSection: HTMLElement) {
+    while (playersSection.firstChild != null) {
+        playersSection.removeChild(playersSection.lastChild!!)
+    }
 }

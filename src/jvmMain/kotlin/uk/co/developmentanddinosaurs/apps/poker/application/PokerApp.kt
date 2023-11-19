@@ -14,6 +14,7 @@ import io.ktor.server.sessions.*
 import io.ktor.server.websocket.*
 import io.ktor.util.*
 import kotlinx.coroutines.channels.consumeEach
+import poker.models.Player
 import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
 import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.home
@@ -24,6 +25,7 @@ import uk.co.developmentanddinosaurs.apps.poker.application.security.SslKeystore
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
 import uk.co.developmentanddinosaurs.apps.poker.application.sessions.PokerSession
 import kotlin.text.toCharArray
+import kotlin.time.Duration
 
 /**
  * Entry point for the Poker application.
@@ -91,12 +93,15 @@ fun Application.routing() {
         webSocket("/rooms/{room-id}/ws") {
             val roomId = call.parameters["room-id"] ?: throw RuntimeException("Room ID cannot be null")
             val room = roomRepository.getRoom(roomId)
+            val session = call.sessions.get<PokerSession>() ?: throw RuntimeException("No session")
+            val player = Player(session.id, session.name)
+            room.addPlayer(player, this)
             try {
                 incoming.consumeEach {
 
                 }
             } finally {
-
+                room.removePlayer(player, this)
             }
 
         }
