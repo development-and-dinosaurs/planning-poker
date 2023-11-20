@@ -15,29 +15,30 @@ class Room(val id: String) {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
 
-    private val players = ConcurrentHashMap<Player, MutableList<WebSocketSession>>()
+    private val players = ConcurrentHashMap<String, Player>()
+    private val playerSockets = ConcurrentHashMap<String, MutableList<WebSocketSession>>()
 
     suspend fun addPlayer(player: Player, socket: WebSocketSession) {
-        val sockets = players.computeIfAbsent(player) { CopyOnWriteArrayList() }
+        players.computeIfAbsent(player.id) { player }
+        val sockets = playerSockets.computeIfAbsent(player.id) { CopyOnWriteArrayList() }
         sockets.add(socket)
         broadcastPlayers()
     }
 
-    suspend fun removePlayer(player: Player, socket: WebSocketSession) {
-        val sockets = players[player]
-
+    suspend fun removePlayer(playerId: String, socket: WebSocketSession) {
+        val sockets = playerSockets[playerId]
         sockets?.remove(socket)
 
         if (sockets.isNullOrEmpty()) {
-            players.remove(player)
+            players.remove(playerId)
         }
         broadcastPlayers()
     }
 
     private suspend fun broadcastPlayers() {
-        players.values.flatten().forEach { socket ->
+        playerSockets.values.flatten().forEach { socket ->
             try {
-                val event = PlayersEvent(players.keys.toList())
+                val event = PlayersEvent(players.values.toList())
                 send(socket, event)
             } catch (e: Exception) {
                 log.error("Failed to send players event", e)
@@ -51,6 +52,6 @@ class Room(val id: String) {
     }
 
     private suspend fun send(socket: WebSocketSession, event: Event) {
-       socket.send(Frame.Text(Json.encodeToString(event)))
+        socket.send(Frame.Text(Json.encodeToString(event)))
     }
 }

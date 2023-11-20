@@ -101,7 +101,7 @@ fun Application.routing() {
 
                 }
             } finally {
-                room.removePlayer(player, this)
+                room.removePlayer(player.id, this)
             }
 
         }
