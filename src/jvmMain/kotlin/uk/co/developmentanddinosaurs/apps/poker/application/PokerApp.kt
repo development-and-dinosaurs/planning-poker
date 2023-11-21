@@ -13,19 +13,23 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.websocket.*
 import io.ktor.util.*
+import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.serialization.json.Json
+import poker.events.Event
 import poker.models.Player
+import poker.models.Vote
 import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
 import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.home
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.howToPlay
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.room
+import uk.co.developmentanddinosaurs.apps.poker.application.rooms.Room
 import uk.co.developmentanddinosaurs.apps.poker.application.rooms.RoomRepository
 import uk.co.developmentanddinosaurs.apps.poker.application.security.SslKeystore
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
 import uk.co.developmentanddinosaurs.apps.poker.application.sessions.PokerSession
 import kotlin.text.toCharArray
-import kotlin.time.Duration
 
 /**
  * Entry point for the Poker application.
@@ -74,7 +78,6 @@ fun Application.routing() {
         }
         get("/") {
             val session = call.sessions.get<PokerSession>() ?: throw RuntimeException("No session")
-            println(session.name)
             call.respondHtml { home(session.name) }
         }
         get("/how-to-play") {
@@ -97,8 +100,10 @@ fun Application.routing() {
             val player = Player(session.id, session.name)
             room.addPlayer(player, this)
             try {
-                incoming.consumeEach {
-
+                incoming.consumeEach { frame ->
+                    if(frame is Frame.Text) {
+                        handleEvent(room, player.id, frame.readText())
+                    }
                 }
             } finally {
                 room.removePlayer(player.id, this)
@@ -109,3 +114,15 @@ fun Application.routing() {
     }
 }
 
+private suspend fun handleEvent(pokerRoom: Room, playerId: String, command: String) {
+    if (!command.startsWith("{")) return
+    val event = Json.decodeFromString<Event>(command)
+    when (event.type) {
+        "vote" -> {
+            pokerRoom.vote(playerId, Json.decodeFromString<Vote>(event.contents))
+        }
+        else -> {
+            println("Client sent invalid event [${event.type}]")
+        }
+    }
+}

@@ -13,7 +13,9 @@ import kotlinx.serialization.json.Json
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import poker.events.Event
+import poker.events.VoteEvent
 import poker.models.Player
+import poker.models.Vote
 
 val httpClient = HttpClient { install(WebSockets) }
 val webSocketClient = WebSocketClient(httpClient)
@@ -43,6 +45,10 @@ fun setUpCardClickListeners() {
         card.addEventListener("click", {
             cards.forEach { it.removeClass("active") }
             card.addClass("active")
+            val size = card.id.replace("card-", "")
+            MainScope().launch {
+                webSocketClient.sendEvent(VoteEvent(Vote.fromString(size)))
+            }
         })
     }
 }
@@ -86,7 +92,7 @@ fun writePlayers(players: List<Player>) {
                     textContent = player.name
                 })
                 appendChild(document.createElement("td").apply {
-                    textContent = "?"
+                    textContent = player.vote.value
                 })
             }
     }.forEach {

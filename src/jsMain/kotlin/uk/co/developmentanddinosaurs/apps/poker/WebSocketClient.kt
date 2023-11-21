@@ -4,6 +4,9 @@ import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.websocket.*
 import kotlinx.browser.window
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import poker.events.Event
 
 class WebSocketClient(private val httpClient: HttpClient) {
     private lateinit var session: WebSocketSession
@@ -26,6 +29,10 @@ class WebSocketClient(private val httpClient: HttpClient) {
                 onReceive(frame.readText())
             }
         }
+    }
+
+    suspend fun sendEvent(event: Event) {
+        session.send(Frame.Text(Json.encodeToString(event)))
     }
 
 }

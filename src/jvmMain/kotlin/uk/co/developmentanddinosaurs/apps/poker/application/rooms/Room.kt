@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import poker.events.Event
 import poker.events.PlayersEvent
 import poker.models.Player
+import poker.models.Vote
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -32,6 +33,12 @@ class Room(val id: String) {
         if (sockets.isNullOrEmpty()) {
             players.remove(playerId)
         }
+        broadcastPlayers()
+    }
+
+    suspend fun vote(playerId: String, vote: Vote) {
+        val player = players[playerId] ?: return
+        player.vote = vote
         broadcastPlayers()
     }
 
