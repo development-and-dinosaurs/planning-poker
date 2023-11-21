@@ -88,13 +88,14 @@ fun writePlayers(players: List<Player>) {
     removePlayersFromSection(playersSection)
     players.map { player ->
         document.createElement("tr").apply {
-                appendChild(document.createElement("td").apply {
-                    textContent = player.name
-                })
-                appendChild(document.createElement("td").apply {
-                    textContent = player.vote.value
-                })
-            }
+            className = if (player.voted) "voted" else ""
+            appendChild(document.createElement("td").apply {
+                textContent = player.name
+            })
+            appendChild(document.createElement("td").apply {
+                textContent = player.vote.value
+            })
+        }
     }.forEach {
         playersSection.appendChild(it)
     }

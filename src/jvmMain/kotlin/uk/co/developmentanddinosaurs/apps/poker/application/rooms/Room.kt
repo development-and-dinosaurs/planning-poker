@@ -39,6 +39,7 @@ class Room(val id: String) {
     suspend fun vote(playerId: String, vote: Vote) {
         val player = players[playerId] ?: return
         player.vote = vote
+        player.voted = true
         broadcastPlayers()
     }
 

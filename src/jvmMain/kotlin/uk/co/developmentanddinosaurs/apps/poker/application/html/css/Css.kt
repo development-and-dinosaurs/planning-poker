@@ -36,4 +36,7 @@ fun CssBuilder.style() = run {
             listStyleType = ListStyleType.disc
         }
     }
+    rule(".voted") {
+        backgroundColor = Color("#ff9800").withAlpha(0.5)
+    }
 }
