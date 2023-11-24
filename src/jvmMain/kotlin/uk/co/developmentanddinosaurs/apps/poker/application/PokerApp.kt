@@ -121,6 +121,9 @@ private suspend fun handleEvent(pokerRoom: Room, playerId: String, command: Stri
         "vote" -> {
             pokerRoom.vote(playerId, Json.decodeFromString<Vote>(event.contents))
         }
+        "revealVotes" -> {
+            pokerRoom.revealVotes()
+        }
         else -> {
             println("Client sent invalid event [${event.type}]")
         }

@@ -43,13 +43,26 @@ class Room(val id: String) {
         broadcastPlayers()
     }
 
+    suspend fun revealVotes() {
+        broadcastVotes()
+    }
+
     private suspend fun broadcastPlayers() {
+        val event = PlayersEvent(players.values.map { Player(it.id, it.name, Vote.HIDDEN, it.voted) })
+        broadcast(event)
+    }
+
+    private suspend fun broadcastVotes() {
+        val event = PlayersEvent(players.values.toList())
+        broadcast(event)
+    }
+
+    private suspend fun broadcast(event: Event) {
         playerSockets.values.flatten().forEach { socket ->
             try {
-                val event = PlayersEvent(players.values.toList())
                 send(socket, event)
             } catch (e: Exception) {
-                log.error("Failed to send players event", e)
+                log.error("Failed to send event", e)
                 try {
                     socket.close(CloseReason(CloseReason.Codes.PROTOCOL_ERROR, "Error sending message"))
                 } catch (ignore: ClosedSendChannelException) {

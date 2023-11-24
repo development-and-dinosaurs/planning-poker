@@ -28,6 +28,14 @@ fun HTML.room(roomId: String) = run {
                 }
                 div(classes = "row") {
                     div(classes = "col s6") {
+                        a(classes = "waves-effect waves-light btn-large orange") {
+                            id = "reveal-votes"
+                            +"Reveal votes"
+                        }
+                    }
+                }
+                div(classes = "row") {
+                    div(classes = "col s6") {
                         h2 { +"Players" }
                     }
                     div(classes = "col s6") {
