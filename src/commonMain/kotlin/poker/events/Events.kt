@@ -14,3 +14,7 @@ class PlayersEvent(players: List<Player>) : Event("players", Json.encodeToString
 class VoteEvent(vote: Vote): Event("vote", Json.encodeToString(vote))
 
 class RevealVotesEvent: Event("revealVotes")
+
+class ClearVotesEvent: Event("clearVotes")
+
+class ResetEvent: Event("reset")

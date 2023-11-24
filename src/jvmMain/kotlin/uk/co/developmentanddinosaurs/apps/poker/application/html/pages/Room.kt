@@ -33,6 +33,12 @@ fun HTML.room(roomId: String) = run {
                             +"Reveal votes"
                         }
                     }
+                    div(classes = "col s6") {
+                        a(classes = "waves-effect waves-light btn-large orange") {
+                            id = "clear-votes"
+                            +"Clear votes"
+                        }
+                    }
                 }
                 div(classes = "row") {
                     div(classes = "col s6") {

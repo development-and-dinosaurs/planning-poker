@@ -12,6 +12,7 @@ import kotlinx.dom.removeClass
 import kotlinx.serialization.json.Json
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
+import poker.events.ClearVotesEvent
 import poker.events.Event
 import poker.events.RevealVotesEvent
 import poker.events.VoteEvent
@@ -45,6 +46,9 @@ private fun setUpRoomClickListeners() {
     document.getElementById("reveal-votes")?.addEventListener("click", {
         MainScope().launch { revealVotes() }
     })
+    document.getElementById("clear-votes")?.addEventListener("click", {
+        MainScope().launch { clearVotes() }
+    })
 }
 
 private fun setUpCardClickListeners() {
@@ -72,6 +76,10 @@ private suspend fun revealVotes() {
     webSocketClient.sendEvent(RevealVotesEvent())
 }
 
+private suspend fun clearVotes() {
+    webSocketClient.sendEvent(ClearVotesEvent())
+}
+
 private suspend fun initialiseWebSocketConnection() {
     try {
         if (window.location.pathname.contains("rooms/")) {
@@ -93,6 +101,9 @@ private fun handleEvent(event: String) {
     when (eventJson.type) {
         "players" -> {
             writePlayers(Json.decodeFromString(eventJson.contents))
+        }
+        "reset" -> {
+            resetCards()
         }
     }
 }
@@ -119,4 +130,9 @@ private fun removePlayersFromSection(playersSection: HTMLElement) {
     while (playersSection.firstChild != null) {
         playersSection.removeChild(playersSection.lastChild!!)
     }
+}
+
+private fun resetCards() {
+    val cards = document.getElementsByClassName("card").asList()
+    cards.forEach { it.removeClass("active") }
 }

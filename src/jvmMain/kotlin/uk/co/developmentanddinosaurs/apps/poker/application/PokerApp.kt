@@ -124,6 +124,9 @@ private suspend fun handleEvent(pokerRoom: Room, playerId: String, command: Stri
         "revealVotes" -> {
             pokerRoom.revealVotes()
         }
+        "clearVotes" -> {
+            pokerRoom.clearVotes()
+        }
         else -> {
             println("Client sent invalid event [${event.type}]")
         }

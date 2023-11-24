@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 import poker.events.Event
 import poker.events.PlayersEvent
+import poker.events.ResetEvent
 import poker.models.Player
 import poker.models.Vote
 import java.util.concurrent.ConcurrentHashMap
@@ -47,6 +48,12 @@ class Room(val id: String) {
         broadcastVotes()
     }
 
+    suspend fun clearVotes() {
+        players.values.forEach { it.vote = Vote.HIDDEN; it.voted = false }
+        broadcastPlayers()
+        broadcastReset()
+    }
+
     private suspend fun broadcastPlayers() {
         val event = PlayersEvent(players.values.map { Player(it.id, it.name, Vote.HIDDEN, it.voted) })
         broadcast(event)
@@ -54,6 +61,11 @@ class Room(val id: String) {
 
     private suspend fun broadcastVotes() {
         val event = PlayersEvent(players.values.toList())
+        broadcast(event)
+    }
+
+    private suspend fun broadcastReset() {
+        val event = ResetEvent()
         broadcast(event)
     }
 
@@ -75,4 +87,5 @@ class Room(val id: String) {
     private suspend fun send(socket: WebSocketSession, event: Event) {
         socket.send(Frame.Text(Json.encodeToString(event)))
     }
+
 }
