@@ -111,6 +111,9 @@ fun Application.routing() {
                 }
             } finally {
                 room.removePlayer(player.id, this)
+                if(room.isEmpty()) {
+                    roomRepository.removeRoom(room.id)
+                }
             }
 
         }

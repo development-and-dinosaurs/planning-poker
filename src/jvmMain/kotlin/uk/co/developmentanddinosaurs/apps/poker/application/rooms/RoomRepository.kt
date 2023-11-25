@@ -25,6 +25,9 @@ class RoomRepository(private val nameGenerator: NameGenerator) {
         return rooms[roomId] ?: throw RoomDoesNotExistException(roomId)
     }
 
+    fun removeRoom(roomId: String) {
+        rooms.remove(roomId)
+    }
 }
 
 class RoomDoesNotExistException(room: String) : RuntimeException("$room does not exist")
