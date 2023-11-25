@@ -23,9 +23,6 @@ fun FlowContent.header(page: String) = run {
                             +"Create a Room"
                         }
                     }
-                    li(classes = if (page == "about") "active" else "") {
-                        a(href = "/about") { +"About" }
-                    }
                 }
             }
         }
