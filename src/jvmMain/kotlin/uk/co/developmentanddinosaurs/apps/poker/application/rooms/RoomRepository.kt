@@ -30,4 +30,4 @@ class RoomRepository(private val nameGenerator: NameGenerator) {
     }
 }
 
-class RoomDoesNotExistException(room: String) : RuntimeException("$room does not exist")
+class RoomDoesNotExistException(val room: String) : RuntimeException("$room does not exist")
