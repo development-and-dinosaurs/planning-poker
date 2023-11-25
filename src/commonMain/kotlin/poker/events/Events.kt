@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import poker.models.Player
+import poker.models.Stats
 import poker.models.Vote
 
 @Serializable
@@ -16,5 +17,7 @@ class VoteEvent(vote: Vote): Event("vote", Json.encodeToString(vote))
 class RevealVotesEvent: Event("revealVotes")
 
 class ClearVotesEvent: Event("clearVotes")
+
+class StatsEvent(stats: Stats): Event("stats", Json.encodeToString(stats))
 
 class ResetEvent: Event("reset")

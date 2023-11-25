@@ -17,6 +17,7 @@ import poker.events.Event
 import poker.events.RevealVotesEvent
 import poker.events.VoteEvent
 import poker.models.Player
+import poker.models.Stats
 import poker.models.Vote
 
 val httpClient = HttpClient { install(WebSockets) }
@@ -102,8 +103,14 @@ private fun handleEvent(event: String) {
         "players" -> {
             writePlayers(Json.decodeFromString(eventJson.contents))
         }
+
+        "stats" -> {
+            writeStats(Json.decodeFromString(eventJson.contents))
+        }
+
         "reset" -> {
             resetCards()
+            clearStats()
         }
     }
 }
@@ -130,6 +137,17 @@ private fun removePlayersFromSection(playersSection: HTMLElement) {
     while (playersSection.firstChild != null) {
         playersSection.removeChild(playersSection.lastChild!!)
     }
+}
+
+fun clearStats(): StatsSection {
+    val statsSection = StatsSection(document)
+    statsSection.reset()
+    return statsSection
+}
+
+fun writeStats(stats: Stats) {
+    val statsSection = clearStats()
+    statsSection.write(stats)
 }
 
 private fun resetCards() {

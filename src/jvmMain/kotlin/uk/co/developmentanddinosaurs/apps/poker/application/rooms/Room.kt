@@ -8,7 +8,10 @@ import org.slf4j.LoggerFactory
 import poker.events.Event
 import poker.events.PlayersEvent
 import poker.events.ResetEvent
+import poker.events.StatsEvent
+import poker.models.Average
 import poker.models.Player
+import poker.models.Stats
 import poker.models.Vote
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -46,6 +49,7 @@ class Room(val id: String) {
 
     suspend fun revealVotes() {
         broadcastVotes()
+        broadcastStats()
     }
 
     suspend fun clearVotes() {
@@ -61,6 +65,15 @@ class Room(val id: String) {
 
     private suspend fun broadcastVotes() {
         val event = PlayersEvent(players.values.toList())
+        broadcast(event)
+    }
+
+    private suspend fun broadcastStats() {
+        val votes = players.values.map { it.vote }
+        val voteCount = votes.groupingBy { it }.eachCount()
+        val mode = voteCount.maxByOrNull { it.value }?.key ?: Vote.HIDDEN
+        val mean = votes.filter { it != Vote.HIDDEN }.map { it.intValue() }.average()
+        val event = StatsEvent(Stats(voteCount, Average(mode, mean)))
         broadcast(event)
     }
 
