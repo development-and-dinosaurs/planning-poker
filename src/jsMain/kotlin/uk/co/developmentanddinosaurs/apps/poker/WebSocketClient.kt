@@ -11,7 +11,7 @@ import poker.events.Event
 class WebSocketClient(private val httpClient: HttpClient) {
     private lateinit var session: WebSocketSession
 
-    var isConnected = false
+    private var isConnected = false
 
     suspend fun connect() {
         val host = window.location.hostname
