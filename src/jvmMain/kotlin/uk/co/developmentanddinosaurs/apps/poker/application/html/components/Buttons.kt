@@ -13,7 +13,7 @@ fun FlowContent.idButton(text: String) = run {
 
 fun FlowContent.linkButton(text: String, link: String) = run {
     a(classes = "waves-effect waves-light btn-large orange") {
-        +text
         href = link
+        +text
     }
 }
