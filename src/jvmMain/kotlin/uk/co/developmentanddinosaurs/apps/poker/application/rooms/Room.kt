@@ -58,6 +58,10 @@ class Room(val id: String) {
         broadcastReset()
     }
 
+    fun isEmpty(): Boolean {
+        return players.isEmpty()
+    }
+
     private suspend fun broadcastPlayers() {
         val event = PlayersEvent(players.values.map { Player(it.id, it.name, Vote.HIDDEN, it.voted) })
         broadcast(event)

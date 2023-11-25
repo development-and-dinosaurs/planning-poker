@@ -1,0 +1,42 @@
+name: 🚀 Deploy Application
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: 🚀 Deploy Application
+    runs-on: ubuntu-latest
+    steps:
+      - name: ☕ Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: corretto
+      - name: 🛒 Checkout code
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::642731005123:role/cloudformation-deploy
+          aws-region: eu-west-2
+      - name: 🐘 Gradle build
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          arguments: jar
+          concurrent: true
+      - name: Publish Jar
+        run: |
+          aws s3 sync build/libs/. s3://planning-poker-application
+      - name: Deploy CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: prehistoric-planning-poker-application
+          template: cloudformation.yaml
