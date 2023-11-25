@@ -30,6 +30,7 @@ import uk.co.developmentanddinosaurs.apps.poker.application.security.SslKeystore
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
 import uk.co.developmentanddinosaurs.apps.poker.application.sessions.PokerSession
 import kotlin.text.toCharArray
+import kotlin.time.Duration
 
 /**
  * Entry point for the Poker application.
@@ -62,7 +63,10 @@ fun Application.plugins() {
 
 fun Application.session() {
     install(Sessions) {
-        cookie<PokerSession>("PokerSession")
+        cookie<PokerSession>("PokerSession") {
+            cookie.httpOnly = false
+            cookie.maxAge = Duration.INFINITE
+        }
     }
     intercept(ApplicationCallPipeline.Plugins) {
         if (call.sessions.get<PokerSession>() == null) {

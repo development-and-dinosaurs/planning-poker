@@ -24,6 +24,7 @@ val httpClient = HttpClient { install(WebSockets) }
 val webSocketClient = WebSocketClient(httpClient)
 
 fun main() {
+    println(document.cookie)
     document.addEventListener("DOMContentLoaded", {
         setUpClickListeners()
         setUpRoomClickListeners()
@@ -122,7 +123,9 @@ private fun writePlayers(players: List<Player>) {
         document.createElement("tr").apply {
             className = if (player.voted) "voted" else ""
             appendChild(document.createElement("td").apply {
-                textContent = player.name
+                val dinosaurEmoji =  "\uD83E\uDD96"
+                val icon = if(document.cookie.contains(player.id)) "$dinosaurEmoji " else ""
+                textContent = icon + player.name
             })
             appendChild(document.createElement("td").apply {
                 textContent = player.vote.value
