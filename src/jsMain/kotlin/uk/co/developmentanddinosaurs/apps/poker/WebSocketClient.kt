@@ -17,7 +17,7 @@ class WebSocketClient(private val httpClient: HttpClient) {
         val host = window.location.hostname
         val port = window.location.port
         val path = window.location.pathname + "/ws"
-        session = httpClient.webSocketSession("ws://$host:$port$path")
+        session = httpClient.webSocketSession("wss://$host:$port$path")
         isConnected = true
     }
 
