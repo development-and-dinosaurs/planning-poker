@@ -3,7 +3,7 @@ name: 🚀 Deploy Application
 on:
   push:
     branches:
-      - cloudformation-deploy
+      - main
   workflow_dispatch:
 
 permissions:
