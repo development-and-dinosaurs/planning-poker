@@ -3,6 +3,7 @@ package uk.co.developmentanddinosaurs.apps.poker.application.html.pages
 import kotlinx.html.*
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.head
 import uk.co.developmentanddinosaurs.apps.poker.application.html.components.header
+import uk.co.developmentanddinosaurs.apps.poker.application.html.components.idButton
 
 fun HTML.howToPlay() = run {
     head(title = "How to Play | Prehistoric Planning Poker")
@@ -33,10 +34,7 @@ fun HTML.howToPlay() = run {
                         h2 { +"Create a room" }
                         p { +"We start by creating a room in which we can play" }
                         p { +"To create a room, click the 'Create Room' button on the homepage, at the top in the navigation bar, or even this lovely button right here." }
-                        a(classes = "waves-effect waves-light btn-large orange") {
-                            href = "/how-to-play"
-                            +"create-a-room"
-                        }
+                        idButton("Create room")
                         p { +"Once you've created a room, you'll be taken directly to the room page, where you'll be able to invite your team." }
                     }
                     div(classes = "row") {

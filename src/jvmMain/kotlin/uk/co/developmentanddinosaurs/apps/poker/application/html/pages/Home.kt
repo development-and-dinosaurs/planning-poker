@@ -1,11 +1,7 @@
 package uk.co.developmentanddinosaurs.apps.poker.application.html.pages
 
 import kotlinx.html.*
-import uk.co.developmentanddinosaurs.apps.poker.application.html.components.DinosaurCard
-import uk.co.developmentanddinosaurs.apps.poker.application.html.components.card
-import uk.co.developmentanddinosaurs.apps.poker.application.html.components.head
-import uk.co.developmentanddinosaurs.apps.poker.application.html.components.header
-import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
+import uk.co.developmentanddinosaurs.apps.poker.application.html.components.*
 
 fun HTML.home(name: String) = run {
     head(title = "Prehistoric Planning Poker")
@@ -51,16 +47,10 @@ fun HTML.home(name: String) = run {
                     }
                     div(classes = "row") {
                         div(classes = "col s6 l3 offset-l3") {
-                            a(classes = "waves-effect waves-light btn-large orange") {
-                                href = "/how-to-play"
-                                +"How to play"
-                            }
+                            linkButton("How to play", "how-to-play")
                         }
                         div(classes = "col s6 l3") {
-                            a(classes = "waves-effect waves-light btn-large orange") {
-                                id = "create-room"
-                                +"Create room"
-                            }
+                            idButton("Create room")
                         }
                     }
                 }
