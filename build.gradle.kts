@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "uk.co.developmentanddinosaurs.apps.poker"
-version = "0.0.1"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
@@ -58,6 +58,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
                 implementation("io.ktor:ktor-server-netty:$ktorVersion")
                 implementation("io.ktor:ktor-server-sessions:$ktorVersion")
+                implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-server-websockets:$ktorVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.641")
             }

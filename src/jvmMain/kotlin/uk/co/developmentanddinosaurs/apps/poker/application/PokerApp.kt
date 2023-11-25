@@ -8,6 +8,7 @@ import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.defaultheaders.*
+import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
@@ -19,6 +20,7 @@ import kotlinx.serialization.json.Json
 import poker.events.Event
 import poker.models.Player
 import poker.models.Vote
+import uk.co.developmentanddinosaurs.apps.poker.application.errors.ErrorHandler
 import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
 import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.home
@@ -39,8 +41,7 @@ fun main() {
     val sslKeystore = SslKeystore()
     val environment = applicationEngineEnvironment {
         connector { }
-        sslConnector(
-            keyStore = sslKeystore.keyStore,
+        sslConnector(keyStore = sslKeystore.keyStore,
             keyAlias = sslKeystore.alias,
             keyStorePassword = { sslKeystore.password.toCharArray() },
             privateKeyPassword = { sslKeystore.password.toCharArray() }) {
@@ -49,8 +50,20 @@ fun main() {
         module(Application::plugins)
         module(Application::session)
         module(Application::routing)
+        module(Application::errorHandling)
     }
     embeddedServer(Netty, environment).start(wait = true)
+}
+
+private fun Application.errorHandling() {
+    install(StatusPages) {
+        status(HttpStatusCode.NotFound) { call, status ->
+            ErrorHandler().handle(call, status)
+        }
+        exception<Throwable> { call, cause ->
+            ErrorHandler().handle(call, cause)
+        }
+    }
 }
 
 private val roomRepository = RoomRepository(NameGenerator())
@@ -105,13 +118,13 @@ fun Application.routing() {
             room.addPlayer(player, this)
             try {
                 incoming.consumeEach { frame ->
-                    if(frame is Frame.Text) {
+                    if (frame is Frame.Text) {
                         handleEvent(room, player.id, frame.readText())
                     }
                 }
             } finally {
                 room.removePlayer(player.id, this)
-                if(room.isEmpty()) {
+                if (room.isEmpty()) {
                     roomRepository.removeRoom(room.id)
                 }
             }
@@ -128,12 +141,15 @@ private suspend fun handleEvent(pokerRoom: Room, playerId: String, command: Stri
         "vote" -> {
             pokerRoom.vote(playerId, Json.decodeFromString<Vote>(event.contents))
         }
+
         "revealVotes" -> {
             pokerRoom.revealVotes()
         }
+
         "clearVotes" -> {
             pokerRoom.clearVotes()
         }
+
         else -> {
             println("Client sent invalid event [${event.type}]")
         }
