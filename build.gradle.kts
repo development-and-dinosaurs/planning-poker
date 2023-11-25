@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "uk.co.developmentanddinosaurs.apps.poker"
-version = "0.0.1"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
