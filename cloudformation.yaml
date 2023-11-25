@@ -16,8 +16,8 @@ Resources:
         #cloud-boothook
         #!/bin/bash
         sudo yum -y install java-17-amazon-corretto-headless
-        aws s3 cp s3://planning-poker-application/planning-poker-jvm.jar .
-        sudo java -jar planning-poker-jvm.jar &
+        aws s3 cp s3://planning-poker-application/planning-poker-jvm-0.0.1.jar .
+        sudo java -jar planning-poker-jvm-0.0.1.jar &
   PlanningPokerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
