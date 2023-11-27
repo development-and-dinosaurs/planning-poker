@@ -19,14 +19,13 @@ import kotlinx.coroutines.channels.consumeEach
 import kotlinx.serialization.json.Json
 import poker.events.Event
 import poker.models.Player
-import poker.models.Vote
 import uk.co.developmentanddinosaurs.apps.poker.application.errors.ErrorHandler
+import uk.co.developmentanddinosaurs.apps.poker.application.events.EventHandler
 import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
 import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.home
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.howToPlay
 import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.room
-import uk.co.developmentanddinosaurs.apps.poker.application.rooms.Room
 import uk.co.developmentanddinosaurs.apps.poker.application.rooms.RoomRepository
 import uk.co.developmentanddinosaurs.apps.poker.application.security.SslKeystore
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
@@ -113,45 +112,23 @@ fun Application.routing() {
         webSocket("/rooms/{room-id}/ws") {
             val roomId = call.parameters["room-id"] ?: throw RuntimeException("Room ID cannot be null")
             val room = roomRepository.getRoom(roomId)
+            val eventHandler = EventHandler(room)
             val session = call.sessions.get<PokerSession>() ?: throw RuntimeException("No session")
             val player = Player(session.id, session.name)
             room.addPlayer(player, this)
             try {
                 incoming.consumeEach { frame ->
                     if (frame is Frame.Text) {
-                        handleEvent(room, player.id, frame.readText())
+                        eventHandler.handle(player, Json.decodeFromString<Event>(frame.readText()))
                     }
                 }
             } finally {
-                room.removePlayer(player.id, this)
+                room.removePlayer(player, this)
                 if (room.isEmpty()) {
                     roomRepository.removeRoom(room.id)
                 }
             }
-
         }
         staticResources("/", "web")
-    }
-}
-
-private suspend fun handleEvent(pokerRoom: Room, playerId: String, command: String) {
-    if (!command.startsWith("{")) return
-    val event = Json.decodeFromString<Event>(command)
-    when (event.type) {
-        "vote" -> {
-            pokerRoom.vote(playerId, Json.decodeFromString<Vote>(event.contents))
-        }
-
-        "revealVotes" -> {
-            pokerRoom.revealVotes()
-        }
-
-        "clearVotes" -> {
-            pokerRoom.clearVotes()
-        }
-
-        else -> {
-            println("Client sent invalid event [${event.type}]")
-        }
     }
 }
