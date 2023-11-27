@@ -30,20 +30,20 @@ class Room(val id: String) {
         broadcastPlayers()
     }
 
-    suspend fun removePlayer(playerId: String, socket: WebSocketSession) {
-        val sockets = playerSockets[playerId]
+    suspend fun removePlayer(player: Player, socket: WebSocketSession) {
+        val sockets = playerSockets[player.id]
         sockets?.remove(socket)
 
         if (sockets.isNullOrEmpty()) {
-            players.remove(playerId)
+            players.remove(player.id)
         }
         broadcastPlayers()
     }
 
-    suspend fun vote(playerId: String, vote: Vote) {
-        val player = players[playerId] ?: return
-        player.vote = vote
-        player.voted = true
+    suspend fun vote(player: Player, vote: Vote) {
+        val roomPlayer = players[player.id] ?: return
+        roomPlayer.vote = vote
+        roomPlayer.voted = true
         broadcastPlayers()
     }
 
