@@ -13,6 +13,7 @@ import poker.models.Average
 import poker.models.Player
 import poker.models.Stats
 import poker.models.Vote
+import uk.co.developmentanddinosaurs.apps.poker.application.statistics.Statistics
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -74,10 +75,8 @@ class Room(val id: String) {
 
     private suspend fun broadcastStats() {
         val votes = players.values.map { it.vote }
-        val voteCount = votes.groupingBy { it }.eachCount()
-        val mode = voteCount.maxByOrNull { it.value }?.key ?: Vote.HIDDEN
-        val mean = votes.filter { it != Vote.HIDDEN }.map { it.intValue() }.average()
-        val event = StatsEvent(Stats(voteCount, Average(mode, mean)))
+        val statistics = Statistics(votes)
+        val event = StatsEvent(Stats(statistics.voteDistribution, Average(statistics.mode, statistics.mean)))
         broadcast(event)
     }
 
