@@ -43,7 +43,7 @@ class StatisticsTest : StringSpec({
 
         val statistics = Statistics(votes)
 
-        statistics.mean shouldBe Double.NaN
+        statistics.mean shouldBe 0.0
     }
 
     "calculates mean of votes with all hidden votes" {
@@ -51,7 +51,7 @@ class StatisticsTest : StringSpec({
 
         val statistics = Statistics(votes)
 
-        statistics.mean shouldBe Double.NaN
+        statistics.mean shouldBe 0.0
     }
 
     "calculates mode of votes" {
