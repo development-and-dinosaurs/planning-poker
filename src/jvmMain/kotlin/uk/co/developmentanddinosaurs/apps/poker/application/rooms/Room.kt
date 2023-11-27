@@ -13,6 +13,7 @@ import poker.models.Average
 import poker.models.Player
 import poker.models.Stats
 import poker.models.Vote
+import uk.co.developmentanddinosaurs.apps.poker.application.statistics.Statistics
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -30,20 +31,20 @@ class Room(val id: String) {
         broadcastPlayers()
     }
 
-    suspend fun removePlayer(playerId: String, socket: WebSocketSession) {
-        val sockets = playerSockets[playerId]
+    suspend fun removePlayer(player: Player, socket: WebSocketSession) {
+        val sockets = playerSockets[player.id]
         sockets?.remove(socket)
 
         if (sockets.isNullOrEmpty()) {
-            players.remove(playerId)
+            players.remove(player.id)
         }
         broadcastPlayers()
     }
 
-    suspend fun vote(playerId: String, vote: Vote) {
-        val player = players[playerId] ?: return
-        player.vote = vote
-        player.voted = true
+    suspend fun vote(player: Player, vote: Vote) {
+        val roomPlayer = players[player.id] ?: return
+        roomPlayer.vote = vote
+        roomPlayer.voted = true
         broadcastPlayers()
     }
 
@@ -74,10 +75,8 @@ class Room(val id: String) {
 
     private suspend fun broadcastStats() {
         val votes = players.values.map { it.vote }
-        val voteCount = votes.groupingBy { it }.eachCount()
-        val mode = voteCount.maxByOrNull { it.value }?.key ?: Vote.HIDDEN
-        val mean = votes.filter { it != Vote.HIDDEN }.map { it.intValue() }.average()
-        val event = StatsEvent(Stats(voteCount, Average(mode, mean)))
+        val statistics = Statistics(votes)
+        val event = StatsEvent(Stats(statistics.voteDistribution, Average(statistics.mode, statistics.mean)))
         broadcast(event)
     }
 
