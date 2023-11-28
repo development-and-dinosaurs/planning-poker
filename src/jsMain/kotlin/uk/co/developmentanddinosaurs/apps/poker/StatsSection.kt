@@ -6,7 +6,6 @@ import org.w3c.dom.HTMLElement
 import poker.models.Stats
 
 class StatsSection(private val document: Document) {
-
     private val statsSection = document.getElementById("stats") as HTMLElement
 
     fun write(stats: Stats) {
@@ -21,7 +20,10 @@ class StatsSection(private val document: Document) {
         statsSection.innerHTML = ""
     }
 
-    private fun row(column1: String, column2: String): Element {
+    private fun row(
+        column1: String,
+        column2: String,
+    ): Element {
         return document.createElement("tr").apply {
             appendChild(column(column1))
             appendChild(column(column2))

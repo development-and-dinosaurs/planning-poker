@@ -1,6 +1,9 @@
 package uk.co.developmentanddinosaurs.apps.poker.application.rooms
 
-import io.ktor.websocket.*
+import io.ktor.websocket.CloseReason
+import io.ktor.websocket.Frame
+import io.ktor.websocket.WebSocketSession
+import io.ktor.websocket.close
 import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -18,20 +21,25 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 class Room(val id: String) {
-
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     private val players = ConcurrentHashMap<String, Player>()
     private val playerSockets = ConcurrentHashMap<String, MutableList<WebSocketSession>>()
 
-    suspend fun addPlayer(player: Player, socket: WebSocketSession) {
+    suspend fun addPlayer(
+        player: Player,
+        socket: WebSocketSession,
+    ) {
         players.computeIfAbsent(player.id) { player }
         val sockets = playerSockets.computeIfAbsent(player.id) { CopyOnWriteArrayList() }
         sockets.add(socket)
         broadcastPlayers()
     }
 
-    suspend fun removePlayer(player: Player, socket: WebSocketSession) {
+    suspend fun removePlayer(
+        player: Player,
+        socket: WebSocketSession,
+    ) {
         val sockets = playerSockets[player.id]
         sockets?.remove(socket)
 
@@ -41,7 +49,10 @@ class Room(val id: String) {
         broadcastPlayers()
     }
 
-    suspend fun vote(player: Player, vote: Vote) {
+    suspend fun vote(
+        player: Player,
+        vote: Vote,
+    ) {
         val roomPlayer = players[player.id] ?: return
         roomPlayer.vote = vote
         roomPlayer.voted = true
@@ -54,7 +65,10 @@ class Room(val id: String) {
     }
 
     suspend fun clearVotes() {
-        players.values.forEach { it.vote = Vote.HIDDEN; it.voted = false }
+        players.values.forEach {
+            it.vote = Vote.HIDDEN
+            it.voted = false
+        }
         broadcastPlayers()
         broadcastReset()
     }
@@ -100,8 +114,10 @@ class Room(val id: String) {
         }
     }
 
-    private suspend fun send(socket: WebSocketSession, event: Event) {
+    private suspend fun send(
+        socket: WebSocketSession,
+        event: Event,
+    ) {
         socket.send(Frame.Text(Json.encodeToString(event)))
     }
-
 }

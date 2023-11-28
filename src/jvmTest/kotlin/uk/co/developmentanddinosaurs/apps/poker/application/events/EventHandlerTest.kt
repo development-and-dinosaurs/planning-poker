@@ -41,5 +41,4 @@ class EventHandlerTest : StringSpec({
 
         coVerify { room.clearVotes() }
     }
-
 })

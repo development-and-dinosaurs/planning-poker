@@ -1,8 +1,8 @@
 package uk.co.developmentanddinosaurs.apps.poker
 
-import io.ktor.client.*
-import io.ktor.client.plugins.websocket.*
-import io.ktor.client.request.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.request.post
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.MainScope
@@ -92,12 +92,13 @@ private suspend fun initialiseWebSocketConnection() {
 }
 
 private fun handleEvent(event: String) {
-    val eventJson = try {
-        Json.decodeFromString<Event>(event)
-    } catch (e: Exception) {
-        println(e.message)
-        throw e
-    }
+    val eventJson =
+        try {
+            Json.decodeFromString<Event>(event)
+        } catch (e: Exception) {
+            println(e.message)
+            throw e
+        }
     when (eventJson.type) {
         "players" -> {
             writePlayers(Json.decodeFromString(eventJson.contents))

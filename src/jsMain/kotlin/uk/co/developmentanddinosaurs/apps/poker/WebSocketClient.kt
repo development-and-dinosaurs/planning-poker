@@ -1,8 +1,11 @@
 package uk.co.developmentanddinosaurs.apps.poker
 
-import io.ktor.client.*
-import io.ktor.client.plugins.websocket.*
-import io.ktor.websocket.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.websocket.WebSocketException
+import io.ktor.client.plugins.websocket.webSocketSession
+import io.ktor.websocket.Frame
+import io.ktor.websocket.WebSocketSession
+import io.ktor.websocket.readText
 import kotlinx.browser.window
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -34,5 +37,4 @@ class WebSocketClient(private val httpClient: HttpClient) {
     suspend fun sendEvent(event: Event) {
         session.send(Frame.Text(Json.encodeToString(event)))
     }
-
 }

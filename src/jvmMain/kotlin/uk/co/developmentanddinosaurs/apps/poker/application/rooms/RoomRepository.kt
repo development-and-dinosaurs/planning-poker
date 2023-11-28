@@ -3,7 +3,6 @@ package uk.co.developmentanddinosaurs.apps.poker.application.rooms
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
 
 class RoomRepository(private val nameGenerator: NameGenerator) {
-
     private val rooms = mutableMapOf<String, Room>()
 
     fun createRoom(): Room {

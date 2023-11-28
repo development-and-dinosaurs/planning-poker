@@ -6,7 +6,6 @@ import org.w3c.dom.HTMLElement
 import poker.models.Player
 
 class PlayersSection(private val document: Document) {
-
     private val playersSection = document.getElementById("players") as HTMLElement
     private val dinosaurEmoji = "\uD83E\uDD96" // 🦖
 

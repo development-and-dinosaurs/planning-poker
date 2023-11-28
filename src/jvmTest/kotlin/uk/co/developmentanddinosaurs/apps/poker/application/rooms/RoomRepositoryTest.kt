@@ -40,10 +40,10 @@ class RoomRepositoryTest : StringSpec({
     }
 
     "Throws exception when room does not exist" {
-        val exception = shouldThrow<RoomDoesNotExistException> {
-            roomRepository.getRoom("NonExistentRoom")
-        }
+        val exception =
+            shouldThrow<RoomDoesNotExistException> {
+                roomRepository.getRoom("NonExistentRoom")
+            }
         exception shouldHaveMessage "NonExistentRoom does not exist"
     }
-
 })
