@@ -1,7 +1,8 @@
 plugins {
+    application
+    id("com.diffplug.spotless") version "6.23.0"
     kotlin("multiplatform") version "1.9.0"
     kotlin("plugin.serialization") version "1.9.0"
-    application
 }
 
 group = "uk.co.developmentanddinosaurs.apps.poker"
@@ -15,14 +16,18 @@ kotlin {
     js(IR) {
         binaries.executable()
         browser {
-            distribution(Action {
-                outputDirectory = file("$projectDir/build/processedResources/jvm/main/web")
-            })
-            commonWebpackConfig(Action {
-                cssSupport {
-                    enabled.set(true)
-                }
-            })
+            distribution(
+                Action {
+                    outputDirectory = file("$projectDir/build/processedResources/jvm/main/web")
+                },
+            )
+            commonWebpackConfig(
+                Action {
+                    cssSupport {
+                        enabled.set(true)
+                    }
+                },
+            )
         }
     }
     jvm {
@@ -74,6 +79,16 @@ kotlin {
 
 application {
     mainClass.set("uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt")
+}
+
+spotless {
+    kotlin {
+        target("src/**/*.kt")
+        ktlint()
+    }
+    kotlinGradle {
+        ktlint()
+    }
 }
 
 tasks.named<Copy>("jvmProcessResources") {

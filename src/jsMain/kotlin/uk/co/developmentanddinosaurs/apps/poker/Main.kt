@@ -1,8 +1,8 @@
 package uk.co.developmentanddinosaurs.apps.poker
 
-import io.ktor.client.*
-import io.ktor.client.plugins.websocket.*
-import io.ktor.client.request.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.request.post
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.MainScope
@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.dom.addClass
 import kotlinx.dom.removeClass
 import kotlinx.serialization.json.Json
-import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import poker.events.ClearVotesEvent
 import poker.events.Event
@@ -24,9 +23,8 @@ val httpClient = HttpClient { install(WebSockets) }
 val webSocketClient = WebSocketClient(httpClient)
 
 fun main() {
-    println(document.cookie)
     document.addEventListener("DOMContentLoaded", {
-        setUpClickListeners()
+        setUpButtonClickListeners()
         setUpRoomClickListeners()
         setUpCardClickListeners()
         MainScope().launch {
@@ -35,7 +33,7 @@ fun main() {
     })
 }
 
-private fun setUpClickListeners() {
+private fun setUpButtonClickListeners() {
     document.getElementById("create-room")?.addEventListener("click", {
         MainScope().launch { createRoom() }
     })
@@ -94,12 +92,13 @@ private suspend fun initialiseWebSocketConnection() {
 }
 
 private fun handleEvent(event: String) {
-    val eventJson = try {
-        Json.decodeFromString<Event>(event)
-    } catch (e: Exception) {
-        println(e.message)
-        throw e
-    }
+    val eventJson =
+        try {
+            Json.decodeFromString<Event>(event)
+        } catch (e: Exception) {
+            println(e.message)
+            throw e
+        }
     when (eventJson.type) {
         "players" -> {
             writePlayers(Json.decodeFromString(eventJson.contents))
@@ -117,29 +116,9 @@ private fun handleEvent(event: String) {
 }
 
 private fun writePlayers(players: List<Player>) {
-    val playersSection = document.getElementById("players") as HTMLElement
-    removePlayersFromSection(playersSection)
-    players.map { player ->
-        document.createElement("tr").apply {
-            className = if (player.voted) "voted" else ""
-            appendChild(document.createElement("td").apply {
-                val dinosaurEmoji =  "\uD83E\uDD96"
-                val icon = if(document.cookie.contains(player.id)) "$dinosaurEmoji " else ""
-                textContent = icon + player.name
-            })
-            appendChild(document.createElement("td").apply {
-                textContent = player.vote.value
-            })
-        }
-    }.forEach {
-        playersSection.appendChild(it)
-    }
-}
-
-private fun removePlayersFromSection(playersSection: HTMLElement) {
-    while (playersSection.firstChild != null) {
-        playersSection.removeChild(playersSection.lastChild!!)
-    }
+    val playersSection = PlayersSection(document)
+    playersSection.reset()
+    playersSection.write(players)
 }
 
 fun clearStats(): StatsSection {

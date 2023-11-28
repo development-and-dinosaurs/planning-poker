@@ -69,5 +69,4 @@ class StatisticsTest : StringSpec({
 
         statistics.mode shouldBe Vote.HIDDEN
     }
-
 })

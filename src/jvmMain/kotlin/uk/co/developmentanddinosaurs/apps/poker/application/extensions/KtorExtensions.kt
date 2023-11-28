@@ -1,8 +1,8 @@
 package uk.co.developmentanddinosaurs.apps.poker.application.extensions
 
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
+import io.ktor.http.ContentType
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.response.respondText
 import kotlinx.css.CssBuilder
 
 suspend inline fun ApplicationCall.respondCss(builder: CssBuilder.() -> Unit) {

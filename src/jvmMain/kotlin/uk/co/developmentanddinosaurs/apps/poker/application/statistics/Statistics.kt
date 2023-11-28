@@ -10,5 +10,4 @@ class Statistics(votes: List<Vote>) {
     private fun cleanNan(double: Double): Double {
         return if (double.isNaN()) 0.0 else double
     }
-
 }
