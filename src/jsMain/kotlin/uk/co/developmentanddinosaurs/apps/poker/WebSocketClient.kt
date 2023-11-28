@@ -22,7 +22,7 @@ class WebSocketClient(private val httpClient: HttpClient) {
     }
 
     suspend fun receive(onReceive: (input: String) -> Unit) {
-        if(!isConnected) throw WebSocketException("Cannot receive before connection is established")
+        if (!isConnected) throw WebSocketException("Cannot receive before connection is established")
         while (true) {
             val frame = session.incoming.receive()
             if (frame is Frame.Text) {

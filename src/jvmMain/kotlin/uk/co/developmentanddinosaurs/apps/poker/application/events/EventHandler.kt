@@ -12,12 +12,15 @@ class EventHandler(private val room: Room) {
             "vote" -> {
                 room.vote(player, Json.decodeFromString<Vote>(event.contents))
             }
+
             "revealVotes" -> {
                 room.revealVotes()
             }
+
             "clearVotes" -> {
                 room.clearVotes()
             }
+
             else -> {
                 println("Client sent invalid event [${event.type}]")
             }

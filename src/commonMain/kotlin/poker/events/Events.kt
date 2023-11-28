@@ -12,12 +12,12 @@ open class Event(val type: String, val contents: String = "")
 
 class PlayersEvent(players: List<Player>) : Event("players", Json.encodeToString(players))
 
-class VoteEvent(vote: Vote): Event("vote", Json.encodeToString(vote))
+class VoteEvent(vote: Vote) : Event("vote", Json.encodeToString(vote))
 
-class RevealVotesEvent: Event("revealVotes")
+class RevealVotesEvent : Event("revealVotes")
 
-class ClearVotesEvent: Event("clearVotes")
+class ClearVotesEvent : Event("clearVotes")
 
-class StatsEvent(stats: Stats): Event("stats", Json.encodeToString(stats))
+class StatsEvent(stats: Stats) : Event("stats", Json.encodeToString(stats))
 
-class ResetEvent: Event("reset")
+class ResetEvent : Event("reset")

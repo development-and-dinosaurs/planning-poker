@@ -24,7 +24,7 @@ val webSocketClient = WebSocketClient(httpClient)
 
 fun main() {
     document.addEventListener("DOMContentLoaded", {
-        setUpClickListeners()
+        setUpButtonClickListeners()
         setUpRoomClickListeners()
         setUpCardClickListeners()
         MainScope().launch {
@@ -33,7 +33,7 @@ fun main() {
     })
 }
 
-private fun setUpClickListeners() {
+private fun setUpButtonClickListeners() {
     document.getElementById("create-room")?.addEventListener("click", {
         MainScope().launch { createRoom() }
     })
