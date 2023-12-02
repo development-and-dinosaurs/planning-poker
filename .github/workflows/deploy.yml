@@ -3,7 +3,7 @@ name: 🚀 Deploy Application
 on:
   push:
     branches:
-      - use-cdk
+      - main
   workflow_dispatch:
 
 permissions:
