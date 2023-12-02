@@ -3,7 +3,7 @@ name: 🚀 Deploy Application
 on:
   push:
     branches:
-      - main
+      - use-cdk
   workflow_dispatch:
 
 permissions:
@@ -22,7 +22,7 @@ jobs:
           distribution: corretto
       - name: 🛒 Checkout code
         uses: actions/checkout@v4
-      - name: Configure AWS Credentials
+      - name: 🔑 Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::642731005123:role/cloudformation-deploy
@@ -32,11 +32,12 @@ jobs:
         with:
           arguments: jar
           concurrent: true
-      - name: Publish Jar
+      - name: ⬆️ Publish Jar
         run: |
           aws s3 sync build/libs/. s3://planning-poker-application
-      - name: Deploy CloudFormation
-        uses: aws-actions/aws-cloudformation-github-deploy@v1
+      - name: ☁️ Deploy CDK
+        uses: development-and-dinosaurs/github-actions-aws-cdk@v1.0.4
         with:
-          name: prehistoric-planning-poker-application
-          template: cloudformation.yaml
+          command: deploy
+          stacks: PlanningPokerApplication
+          working_directory: infra
