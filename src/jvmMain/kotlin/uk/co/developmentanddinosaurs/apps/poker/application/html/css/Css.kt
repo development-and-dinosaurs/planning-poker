@@ -57,7 +57,7 @@ fun CssBuilder.style() =
         }
         rule("ul.standard-list") {
             marginLeft = 2.rem
-            li {
+            child(li.tagName) {
                 listStyleType = ListStyleType.disc
             }
         }
