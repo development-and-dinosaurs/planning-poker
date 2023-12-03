@@ -1,4 +1,4 @@
 {
-  "app": "java -jar build/libs/infra-1.0.1.jar",
+  "app": "java -jar build/libs/infra-1.0.2.jar",
   "requireApproval": "never"
 }
