@@ -94,12 +94,12 @@ private fun activateCatMode() {
 
 private fun changeToCatLogo() {
     val logo = document.getElementsByClassName("logo-image")[0] as Image
-    logo.src = logo.src.replace("dinosaur", "cat")
+    logo.src = logo.src.replace("dinosaur-", "cat-")
 }
 
 private fun changeToCatIcon() {
     val favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement
-    favicon.href = favicon.href.replace("dinosaur", "cat")
+    favicon.href = favicon.href.replace("dinosaur-", "cat-")
 }
 
 private fun changeToCatTitle() {
@@ -110,7 +110,7 @@ private fun changeToCatCards() {
     val cards = document.getElementsByClassName("points-image").asList()
     cards.forEach { card ->
         card as Image
-        card.src = card.src.replace("dinosaur", "cat")
+        card.src = card.src.replace("dinosaur-", "cat-").replace("dinosaur/", "cat/")
     }
 }
 
