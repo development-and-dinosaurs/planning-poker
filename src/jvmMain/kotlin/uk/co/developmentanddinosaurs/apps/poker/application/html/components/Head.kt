@@ -20,7 +20,7 @@ fun HTML.head(title: String) =
             }
             link {
                 rel = "icon"
-                href = "/images/cards/tyrannosaurus-rex.png"
+                href = "/images/cards/dinosaur/dinosaur-8.png"
             }
             script {
                 type = "text/javascript"

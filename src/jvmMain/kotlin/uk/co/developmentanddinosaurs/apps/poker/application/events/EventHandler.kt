@@ -24,6 +24,10 @@ class EventHandler(private val room: Room) {
                 room.clearVotes()
             }
 
+            "catMode" -> {
+                room.catMode(player)
+            }
+
             else -> {
                 println("Client sent invalid event [${event.type}]")
             }

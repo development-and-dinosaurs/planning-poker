@@ -10,7 +10,13 @@ import kotlinx.coroutines.launch
 import kotlinx.dom.addClass
 import kotlinx.dom.removeClass
 import kotlinx.serialization.json.Json
+import org.w3c.dom.HTMLLinkElement
+import org.w3c.dom.Image
 import org.w3c.dom.asList
+import org.w3c.dom.events.EventListener
+import org.w3c.dom.events.KeyboardEvent
+import org.w3c.dom.get
+import poker.events.CatModeEvent
 import poker.events.ClearVotesEvent
 import poker.events.Event
 import poker.events.RevealVotesEvent
@@ -27,6 +33,7 @@ fun main() {
         setUpButtonClickListeners()
         setUpRoomClickListeners()
         setUpCardClickListeners()
+        setUpCatMode()
         MainScope().launch {
             initialiseWebSocketConnection()
         }
@@ -63,21 +70,77 @@ private fun setUpCardClickListeners() {
     }
 }
 
+private fun setUpCatMode() {
+    var code = ""
+    window.addEventListener(
+        "keydown",
+        EventListener { event ->
+            val keyEvent = event as KeyboardEvent
+            code += keyEvent.key.uppercase()
+            if (code.substring(code.length - 7) == "CATMODE") {
+                activateCatMode()
+            }
+        },
+    )
+}
+
+private fun activateCatMode() {
+    changeToCatLogo()
+    changeToCatIcon()
+    changeToCatTitle()
+    changeToCatCards()
+    MainScope().launch { sendCatModeEvent() }
+}
+
+private fun changeToCatLogo() {
+    val logo = document.getElementsByClassName("logo-image")[0] as Image
+    logo.src = logo.src.replace("dinosaur", "cat")
+}
+
+private fun changeToCatIcon() {
+    val favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement
+    favicon.href = favicon.href.replace("dinosaur", "cat")
+}
+
+private fun changeToCatTitle() {
+    document.title = document.title.replace("Prehistoric", "Pussycat")
+}
+
+private fun changeToCatCards() {
+    val cards = document.getElementsByClassName("points-image").asList()
+    cards.forEach { card ->
+        card as Image
+        card.src = card.src.replace("dinosaur", "cat")
+    }
+}
+
 private suspend fun createRoom() {
     val response = httpClient.post("/rooms")
     window.location.href = response.headers["Location"] ?: ""
 }
 
 private suspend fun vote(size: String) {
-    webSocketClient.sendEvent(VoteEvent(Vote.fromString(size)))
+    if (window.location.pathname.contains("rooms/")) {
+        webSocketClient.sendEvent(VoteEvent(Vote.fromString(size)))
+    }
 }
 
 private suspend fun revealVotes() {
-    webSocketClient.sendEvent(RevealVotesEvent())
+    if (window.location.pathname.contains("rooms/")) {
+        webSocketClient.sendEvent(RevealVotesEvent())
+    }
 }
 
 private suspend fun clearVotes() {
-    webSocketClient.sendEvent(ClearVotesEvent())
+    if (window.location.pathname.contains("rooms/")) {
+        webSocketClient.sendEvent(ClearVotesEvent())
+    }
+}
+
+private suspend fun sendCatModeEvent() {
+    if (window.location.pathname.contains("rooms/")) {
+        webSocketClient.sendEvent(CatModeEvent())
+    }
 }
 
 private suspend fun initialiseWebSocketConnection() {

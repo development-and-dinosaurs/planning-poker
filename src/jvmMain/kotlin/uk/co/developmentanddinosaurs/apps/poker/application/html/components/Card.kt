@@ -12,7 +12,7 @@ fun FlowContent.card(card: DinosaurCard) =
             div(classes = "card") {
                 id = "card-${card.size}"
                 div(classes = "card-image") {
-                    img {
+                    img(classes = "points-image") {
                         alt = card.alt
                         src = card.image
                     }
@@ -33,6 +33,6 @@ enum class DinosaurCard(val size: Int) {
     METEOR(13),
     ;
 
-    val image = "/images/cards/${name.lowercase().replace("_", "-")}.png"
+    val image = "/images/cards/dinosaur/dinosaur-$size.png"
     val alt = "${name.lowercase().replaceFirstChar { it.uppercase() }.replace("_", " ")} Card"
 }
