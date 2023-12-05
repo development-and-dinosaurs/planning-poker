@@ -73,12 +73,18 @@ class Room(val id: String) {
         broadcastReset()
     }
 
+    suspend fun catMode(player: Player) {
+        val roomPlayer = players[player.id] ?: return
+        roomPlayer.catMode = true
+        broadcastPlayers()
+    }
+
     fun isEmpty(): Boolean {
         return players.isEmpty()
     }
 
     private suspend fun broadcastPlayers() {
-        val event = PlayersEvent(players.values.map { Player(it.id, it.name, Vote.HIDDEN, it.voted) })
+        val event = PlayersEvent(players.values.map { Player(it.id, it.name, Vote.HIDDEN, it.voted, it.catMode) })
         broadcast(event)
     }
 

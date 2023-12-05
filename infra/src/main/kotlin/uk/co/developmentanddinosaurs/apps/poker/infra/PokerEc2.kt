@@ -38,8 +38,8 @@ class PokerEc2(private val scope: Construct) {
     private fun userData(): UserData {
         val userData = UserData.forLinux(LinuxUserDataOptions.builder().shebang("#!/bin/bash").build())
         userData.addCommands("sudo yum install -y java-17-amazon-corretto-headless")
-        userData.addS3DownloadCommand(download("planning-poker-application", "planning-poker-jvm-1.0.2.jar"))
-        userData.addCommands("sudo java -jar /app/planning-poker-jvm-1.0.2.jar &")
+        userData.addS3DownloadCommand(download("planning-poker-application", "planning-poker-jvm-1.0.3.jar"))
+        userData.addCommands("sudo java -jar /app/planning-poker-jvm-1.0.3.jar &")
         return userData
     }
 

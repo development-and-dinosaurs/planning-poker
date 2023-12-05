@@ -17,9 +17,9 @@ fun FlowContent.header(page: String) =
                 div(classes = "nav-wrapper orange") {
                     a(classes = "brand-logo") {
                         href = "/"
-                        img {
+                        img(classes = "logo-image") {
                             height = "64"
-                            src = "/logo.png"
+                            src = "/dinosaur-logo.png"
                         }
                     }
                     ul(classes = "right hide-on-med-and-down") {

@@ -21,3 +21,5 @@ class ClearVotesEvent : Event("clearVotes")
 class StatsEvent(stats: Stats) : Event("stats", Json.encodeToString(stats))
 
 class ResetEvent : Event("reset")
+
+class CatModeEvent : Event("catMode")
