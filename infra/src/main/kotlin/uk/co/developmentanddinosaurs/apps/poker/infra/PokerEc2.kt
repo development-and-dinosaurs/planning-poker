@@ -4,8 +4,8 @@ import software.amazon.awscdk.services.ec2.Instance
 import software.amazon.awscdk.services.ec2.InstanceClass
 import software.amazon.awscdk.services.ec2.InstanceSize
 import software.amazon.awscdk.services.ec2.InstanceType
-import software.amazon.awscdk.services.ec2.LinuxUserDataOptions
 import software.amazon.awscdk.services.ec2.MachineImage
+import software.amazon.awscdk.services.ec2.MultipartUserData
 import software.amazon.awscdk.services.ec2.Peer
 import software.amazon.awscdk.services.ec2.Port
 import software.amazon.awscdk.services.ec2.S3DownloadOptions
@@ -36,11 +36,18 @@ class PokerEc2(private val scope: Construct) {
     }
 
     private fun userData(): UserData {
-        val userData = UserData.forLinux(LinuxUserDataOptions.builder().shebang("#!/bin/bash").build())
+        val initConfig = UserData.forLinux()
+        initConfig.addCommands("#cloud-config")
+        initConfig.addCommands("cloud_final_modules:")
+        initConfig.addCommands("- [scripts-user, always]")
+        val userData = UserData.forLinux()
         userData.addCommands("sudo yum install -y java-17-amazon-corretto-headless")
-        userData.addS3DownloadCommand(download("planning-poker-application", "planning-poker-jvm-1.0.3.jar"))
-        userData.addCommands("sudo java -jar /app/planning-poker-jvm-1.0.3.jar &")
-        return userData
+        userData.addS3DownloadCommand(download("planning-poker-application", "planning-poker-jvm-1.0.4.jar"))
+        userData.addCommands("sudo java -jar /app/planning-poker-jvm-1.0.4.jar &")
+        val multipartUserData = MultipartUserData()
+        multipartUserData.addUserDataPart(initConfig)
+        multipartUserData.addUserDataPart(userData)
+        return multipartUserData
     }
 
     private fun download(bucket: String, key: String): S3DownloadOptions {
