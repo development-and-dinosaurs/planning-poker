@@ -24,6 +24,7 @@ import poker.events.VoteEvent
 import poker.models.Player
 import poker.models.Stats
 import poker.models.Vote
+import kotlin.js.Date
 
 val httpClient = HttpClient { install(WebSockets) }
 val webSocketClient = WebSocketClient(httpClient)
@@ -33,6 +34,7 @@ fun main() {
         setUpButtonClickListeners()
         setUpRoomClickListeners()
         setUpCardClickListeners()
+        checkChristmas()
         setUpCatMode()
         MainScope().launch {
             initialiseWebSocketConnection()
@@ -68,6 +70,24 @@ private fun setUpCardClickListeners() {
             MainScope().launch { vote(size) }
         })
     }q
+}
+
+private fun checkChristmas() {
+    if (Date().getMonth() == 11) {
+        activateChristmas()
+    }
+}
+
+private fun activateChristmas() {
+    changeToChristmasCards()
+}
+
+private fun changeToChristmasCards() {
+    val cards = document.getElementsByClassName("points-image").asList()
+    cards.forEach { card ->
+        card as Image
+        card.src = card.src.replace("dinosaur-", "christmas-").replace("dinosaur/", "christmas/")
+    }
 }
 
 private fun setUpCatMode() {
