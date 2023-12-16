@@ -4,11 +4,13 @@ import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import poker.models.Player
+import kotlin.js.Date
 
 class PlayersSection(private val document: Document) {
     private val playersSection = document.getElementById("players") as HTMLElement
     private val dinosaurEmoji = "\uD83E\uDD96 " // 🦖
     private val catEmoji = "\uD83D\uDC31 " // 🐱
+    private val santaEmoji = "\uD83C\uDF85 " // 🎅
 
     fun reset() {
         playersSection.innerHTML = ""
@@ -32,6 +34,9 @@ class PlayersSection(private val document: Document) {
 
     private fun getIcon(player: Player): String {
         if (!document.cookie.contains(player.id)) return ""
+        if (Date().getMonth() == 11) {
+            return santaEmoji
+        }
         return if (player.catMode) catEmoji else dinosaurEmoji
     }
 
