@@ -69,7 +69,7 @@ private fun setUpCardClickListeners() {
             val size = card.id.replace("card-", "")
             MainScope().launch { vote(size) }
         })
-    }q
+    }
 }
 
 private fun checkChristmas() {
