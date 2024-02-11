@@ -35,6 +35,7 @@ fun main() {
         setUpRoomClickListeners()
         setUpCardClickListeners()
         checkChristmas()
+        checkValentines()
         setUpCatMode()
         MainScope().launch {
             initialiseWebSocketConnection()
@@ -87,6 +88,24 @@ private fun changeToChristmasCards() {
     cards.forEach { card ->
         card as Image
         card.src = card.src.replace("dinosaur-", "christmas-").replace("dinosaur/", "christmas/")
+    }
+}
+
+private fun checkValentines() {
+    if (Date().getMonth() == 1 && Date().getDate() == 14) {
+        activateValentines()
+    }
+}
+
+private fun activateValentines() {
+    changeToValentinesCards()
+}
+
+private fun changeToValentinesCards() {
+    val cards = document.getElementsByClassName("points-image").asList()
+    cards.forEach { card ->
+        card as Image
+        card.src = card.src.replace("dinosaur-", "valentines-").replace("dinosaur/", "valentines/")
     }
 }
 
