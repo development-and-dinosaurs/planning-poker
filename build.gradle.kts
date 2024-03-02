@@ -3,10 +3,10 @@ plugins {
     id("com.diffplug.spotless") version "6.23.0"
     kotlin("multiplatform") version "1.9.0"
     kotlin("plugin.serialization") version "1.9.0"
+    id("uk.co.developmentanddinosaurs.git-versioner") version "2.0.1"
 }
 
 group = "uk.co.developmentanddinosaurs.apps.poker"
-version = "1.0.4"
 
 repositories {
     mavenCentral()
@@ -77,6 +77,12 @@ kotlin {
     }
 }
 
+versioner {
+    startFrom {
+        major = 1
+    }
+}
+
 application {
     mainClass.set("uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt")
 }
@@ -103,6 +109,7 @@ tasks.named<JavaExec>("run") {
 
 tasks.named<Jar>("jvmJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveFileName = "${project.name}.jar"
     manifest {
         attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
     }
