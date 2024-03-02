@@ -19,7 +19,7 @@ $ ./gradlew jar
 
 **Run jar**
 ```shell
-$ java -jar build/libs/planning-poker-jvm-<version>.jar
+$ java -jar build/libs/planning-poker.jar
 ```
 
 The application will spin up on ports 80 and 443 on localhost, so you'll be able to access the application after running the jar by navigating to https://localhost. 
