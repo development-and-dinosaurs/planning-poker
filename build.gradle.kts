@@ -95,6 +95,9 @@ spotless {
     kotlinGradle {
         ktlint()
     }
+    freshmark {
+        target("**/*.md")
+    }
 }
 
 tasks.named<Copy>("jvmProcessResources") {
