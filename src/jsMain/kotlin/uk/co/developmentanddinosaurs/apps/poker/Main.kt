@@ -99,7 +99,7 @@ private fun changeToCatLogo() {
 
 private fun changeToCatIcon() {
     val favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement
-    favicon.href = favicon.href.replace("dinosaur-", "cat-")
+    favicon.href = favicon.href.replace("dinosaur-", "cat-").replace("dinosaur/", "cat/")
 }
 
 private fun changeToCatTitle() {
