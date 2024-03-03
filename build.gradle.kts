@@ -1,8 +1,8 @@
 plugins {
     application
-    id("com.diffplug.spotless") version "6.23.0"
-    kotlin("multiplatform") version "1.9.0"
-    kotlin("plugin.serialization") version "1.9.0"
+    id("com.diffplug.spotless") version "6.25.0"
+    kotlin("multiplatform") version "1.9.22"
+    kotlin("plugin.serialization") version "1.9.22"
     id("uk.co.developmentanddinosaurs.git-versioner") version "2.0.1"
 }
 
@@ -38,17 +38,17 @@ kotlin {
         }
     }
     sourceSets {
-        val ktorVersion = "2.3.6"
+        val ktorVersion = "2.3.8"
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
             }
         }
         val commonTest by getting
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.7.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.8.0")
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
                 implementation("io.ktor:ktor-client-websockets:$ktorVersion")
             }
@@ -56,7 +56,7 @@ kotlin {
         val jsTest by getting
         val jvmMain by getting {
             dependencies {
-                implementation("ch.qos.logback:logback-classic:1.4.11")
+                implementation("ch.qos.logback:logback-classic:1.5.2")
                 implementation("io.ktor:ktor-network-tls-certificates:$ktorVersion")
                 implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
                 implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
@@ -65,13 +65,13 @@ kotlin {
                 implementation("io.ktor:ktor-server-sessions:$ktorVersion")
                 implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-server-websockets:$ktorVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.641")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.707")
             }
         }
         val jvmTest by getting {
             dependencies {
-                implementation("io.kotest:kotest-runner-junit5:5.7.0")
-                implementation("io.mockk:mockk:1.13.8")
+                implementation("io.kotest:kotest-runner-junit5:5.8.0")
+                implementation("io.mockk:mockk:1.13.10")
             }
         }
     }

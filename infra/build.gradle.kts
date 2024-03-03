@@ -1,6 +1,6 @@
 plugins {
     id("kotlin")
-    id("com.diffplug.spotless") version "6.23.0"
+    id("com.diffplug.spotless")
 }
 
 group = "uk.co.developmentanddinosaurs.apps.poker"
@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation("software.amazon.awscdk:aws-cdk-lib:2.111.0")
+    implementation("software.amazon.awscdk:aws-cdk-lib:2.131.0")
 }
 
 tasks {
