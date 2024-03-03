@@ -40,4 +40,4 @@ jobs:
         with:
           command: deploy
           stacks: PlanningPokerApplication
-          working_directory: infra
+          working-directory: infra
