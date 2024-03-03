@@ -36,7 +36,7 @@ jobs:
         run: |
           aws s3 cp build/libs/planning-poker.jar s3://planning-poker-application/planning-poker.jar
       - name: ☁️ Deploy CDK
-        uses: development-and-dinosaurs/github-actions-aws-cdk@v1.0.4
+        uses: development-and-dinosaurs/github-actions-aws-cdk@v2
         with:
           command: deploy
           stacks: PlanningPokerApplication
