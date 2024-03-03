@@ -1,0 +1,24 @@
+name: ✔️ PR Build
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: 🔨 Build PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: ☕ Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: corretto
+      - name: 🛒 Checkout code
+        uses: actions/checkout@v4
+      - name: 🐘 Gradle build
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          arguments: check
+          concurrent: true
