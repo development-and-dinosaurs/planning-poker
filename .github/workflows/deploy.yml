@@ -8,14 +8,12 @@ on:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   deploy:
     name: 🚀 Deploy Application
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: ☕ Set up JDK
         uses: actions/setup-java@v4
