@@ -81,6 +81,13 @@ versioner {
     startFrom {
         major = 1
     }
+    git {
+        authentication {
+            https {
+                token = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
 
 application {
