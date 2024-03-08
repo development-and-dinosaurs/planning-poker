@@ -41,3 +41,8 @@ jobs:
           command: deploy
           stacks: PlanningPokerApplication
           working_directory: infra
+      - name: 🏷️ Tag Version
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          arguments: tagVersion
+          concurrent: true
