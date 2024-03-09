@@ -5,3 +5,8 @@ updates:
     schedule:
       interval: "weekly"
       day: "saturday"
+    groups:
+      minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
