@@ -1,12 +1,12 @@
 version: 2
 updates:
-  - package-ecosystem: "gradle"
-    directory: "/"
+  - package-ecosystem: gradle
+    directory: /
     schedule:
-      interval: "weekly"
-      day: "saturday"
+      interval: weekly
+      day: saturday
     groups:
       minor-patch:
         update-types:
-          - "minor"
-          - "patch"
+          - minor
+          - patch
