@@ -1,7 +1,7 @@
 plugins {
     application
     id("com.diffplug.spotless") version "6.25.0"
-    kotlin("multiplatform") version "1.9.22"
+    kotlin("multiplatform") version "1.9.23"
     kotlin("plugin.serialization") version "1.9.22"
     id("uk.co.developmentanddinosaurs.git-versioner") version "2.0.1"
 }
