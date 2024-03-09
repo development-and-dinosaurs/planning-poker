@@ -1,8 +1,10 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl
+
 plugins {
     application
     id("com.diffplug.spotless") version "6.25.0"
-    kotlin("multiplatform") version "1.9.22"
-    kotlin("plugin.serialization") version "1.9.22"
+    kotlin("multiplatform") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
     id("uk.co.developmentanddinosaurs.git-versioner") version "2.0.1"
 }
 
@@ -16,18 +18,15 @@ kotlin {
     js(IR) {
         binaries.executable()
         browser {
-            distribution(
-                Action {
-                    outputDirectory = file("$projectDir/build/processedResources/jvm/main/web")
-                },
-            )
-            commonWebpackConfig(
-                Action {
-                    cssSupport {
-                        enabled.set(true)
-                    }
-                },
-            )
+            @OptIn(ExperimentalDistributionDsl::class)
+            distribution {
+                outputDirectory = file("$projectDir/build/processedResources/jvm/main/web")
+            }
+            commonWebpackConfig {
+                cssSupport {
+                    enabled = true
+                }
+            }
         }
     }
     jvm {
@@ -38,7 +37,7 @@ kotlin {
         }
     }
     sourceSets {
-        val ktorVersion = "2.3.8"
+        val ktorVersion = "2.3.9"
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
@@ -56,7 +55,7 @@ kotlin {
         val jsTest by getting
         val jvmMain by getting {
             dependencies {
-                implementation("ch.qos.logback:logback-classic:1.5.2")
+                implementation("ch.qos.logback:logback-classic:1.5.3")
                 implementation("io.ktor:ktor-network-tls-certificates:$ktorVersion")
                 implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
                 implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
@@ -65,7 +64,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-sessions:$ktorVersion")
                 implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-server-websockets:$ktorVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.708")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.710")
             }
         }
         val jvmTest by getting {
@@ -105,23 +104,26 @@ spotless {
     freshmark {
         target("**/*.md")
     }
-}
-
-tasks.named<Copy>("jvmProcessResources") {
-    val jsBrowserDistribution = tasks.named("jsBrowserDistribution")
-    from(jsBrowserDistribution)
-}
-
-tasks.named<JavaExec>("run") {
-    dependsOn(tasks.named<Jar>("jvmJar"))
-    classpath(tasks.named<Jar>("jvmJar"))
-}
-
-tasks.named<Jar>("jvmJar") {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    archiveFileName = "${project.name}.jar"
-    manifest {
-        attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
+    yaml {
+        target("**/*.yml")
+        prettier()
     }
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+}
+
+tasks {
+    named<Copy>("jvmProcessResources") {
+        from(named("jsBrowserDistribution"))
+    }
+    named<JavaExec>("run") {
+        dependsOn(named("jvmJar"))
+        classpath(named("jvmJar"))
+    }
+    named<Jar>("jvmJar") {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        archiveFileName = "${project.name}.jar"
+        manifest {
+            attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
+        }
+        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    }
 }
