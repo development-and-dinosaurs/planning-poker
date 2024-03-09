@@ -56,7 +56,7 @@ kotlin {
         val jsTest by getting
         val jvmMain by getting {
             dependencies {
-                implementation("ch.qos.logback:logback-classic:1.5.2")
+                implementation("ch.qos.logback:logback-classic:1.5.3")
                 implementation("io.ktor:ktor-network-tls-certificates:$ktorVersion")
                 implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
                 implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
