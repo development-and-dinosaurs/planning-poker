@@ -104,6 +104,10 @@ spotless {
     freshmark {
         target("**/*.md")
     }
+    yaml {
+        target("**/*.yml")
+        prettier()
+    }
 }
 
 tasks {
