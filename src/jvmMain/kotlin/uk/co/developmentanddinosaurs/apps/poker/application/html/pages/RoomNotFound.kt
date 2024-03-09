@@ -30,12 +30,16 @@ fun HTML.roomNotFound(name: String) =
                         }
                         p(classes = "center-align") {
                             +"""We've looked everywhere but we just can't seem to find the room you're looking for. 
-                            |$name, was it? Sorry, we definitely don't have a room $name.
+                            |$name, was it? Sorry, we definitely don't have a $name room.
                             """.trimMargin()
                         }
                         p(classes = "center-align") {
                             +"""Rooms are removed once all players have left, so you might be looking for an abandoned 
                             |room that has been cleaned up already.
+                            """.trimMargin()
+                        }
+                        p(classes = "center-align") {
+                            +"""We might have cleaned it up automatically by mistake too, if so, sorry about that!.
                             """.trimMargin()
                         }
                         p(classes = "center-align") {
