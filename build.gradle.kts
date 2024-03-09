@@ -18,18 +18,15 @@ kotlin {
     js(IR) {
         binaries.executable()
         browser {
-            distribution(
-                Action {
-                    outputDirectory = file("$projectDir/build/processedResources/jvm/main/web")
-                },
-            )
-            commonWebpackConfig(
-                Action {
-                    cssSupport {
-                        enabled.set(true)
-                    }
-                },
-            )
+            @OptIn(ExperimentalDistributionDsl::class)
+            distribution {
+                outputDirectory = file("$projectDir/build/processedResources/jvm/main/web")
+            }
+            commonWebpackConfig {
+                cssSupport {
+                    enabled = true
+                }
+            }
         }
     }
     jvm {
