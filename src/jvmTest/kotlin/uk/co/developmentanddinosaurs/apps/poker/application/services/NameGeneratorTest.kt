@@ -1,7 +1,7 @@
 package uk.co.developmentanddinosaurs.apps.poker.application.services
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldBeIn
 import java.io.File
 
 class NameGeneratorTest : StringSpec({
@@ -16,7 +16,7 @@ class NameGeneratorTest : StringSpec({
         val adjective = name.split(" ")[0]
         val dinosaur = name.split(" ")[1]
 
-        adjectives shouldContain adjective
-        dinosaurs shouldContain dinosaur
+        adjective shouldBeIn adjectives
+        dinosaur shouldBeIn dinosaurs
     }
 })
