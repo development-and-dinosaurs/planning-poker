@@ -106,21 +106,20 @@ spotless {
     }
 }
 
-tasks.named<Copy>("jvmProcessResources") {
-    val jsBrowserDistribution = tasks.named("jsBrowserDistribution")
-    from(jsBrowserDistribution)
-}
-
-tasks.named<JavaExec>("run") {
-    dependsOn(tasks.named<Jar>("jvmJar"))
-    classpath(tasks.named<Jar>("jvmJar"))
-}
-
-tasks.named<Jar>("jvmJar") {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    archiveFileName = "${project.name}.jar"
-    manifest {
-        attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
+tasks {
+    named<Copy>("jvmProcessResources") {
+        from(named("jsBrowserDistribution"))
     }
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    named<JavaExec>("run") {
+        dependsOn(named("jvmJar"))
+        classpath(named("jvmJar"))
+    }
+    named<Jar>("jvmJar") {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        archiveFileName = "${project.name}.jar"
+        manifest {
+            attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
+        }
+        from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    }
 }
