@@ -27,7 +27,7 @@ jobs:
       - name: 🔑 Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::642731005123:role/cloudformation-deploy
+          role-to-assume: arn:aws:iam::642731005123:role/PokerDeployment
           aws-region: eu-west-2
       - name: 🐘 Gradle build
         uses: burrunan/gradle-cache-action@v1
@@ -41,7 +41,7 @@ jobs:
         uses: development-and-dinosaurs/github-actions-aws-cdk@v1
         with:
           command: deploy
-          stacks: PlanningPokerApplication
+          stacks: PokerApplication
           working_directory: infra
       - name: 🏷️ Tag Version
         uses: burrunan/gradle-cache-action@v1
