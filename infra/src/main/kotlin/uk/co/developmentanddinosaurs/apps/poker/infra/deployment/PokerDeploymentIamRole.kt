@@ -15,7 +15,6 @@ import uk.co.developmentanddinosaurs.apps.poker.infra.github.GitHubOpenIdConnect
  * This is the last thing we need to deploy manually before allowing GitHub Actions access to our infrastructure.
  */
 class PokerDeploymentIamRole(private val scope: Construct) {
-
     /**
      * Creates the deployment IAM role.
      *
