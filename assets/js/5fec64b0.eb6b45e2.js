@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2078],{4900:e=>{e.exports=JSON.parse('{"label":"hello","permalink":"/planning-poker/blog/tags/hello","allTagsPath":"/planning-poker/blog/tags","count":2,"unlisted":false}')}}]);
