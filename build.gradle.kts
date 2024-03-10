@@ -120,7 +120,6 @@ tasks {
     }
     named<Jar>("jvmJar") {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        archiveFileName = "${project.name}.jar"
         manifest {
             attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
         }
