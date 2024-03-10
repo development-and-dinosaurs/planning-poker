@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDistributionDsl
+import java.io.FileReader
+import java.util.Properties
 
 plugins {
     application
@@ -124,5 +126,10 @@ tasks {
             attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
         }
         from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    }
+    register<Exec>("uploadToS3") {
+        dependsOn(jar)
+        val bucket = Properties().apply { load(FileReader("infra/src/main/resources/infra.properties")) }.getProperty("bucket-name")
+        commandLine("aws", "s3", "cp", jar.get().outputs.files.singleFile, "s3://$bucket/planning-poker.jar")
     }
 }
