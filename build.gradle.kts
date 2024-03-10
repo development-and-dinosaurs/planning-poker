@@ -95,7 +95,7 @@ application {
 
 spotless {
     kotlin {
-        target("src/**/*.kt")
+        target("src/**/*.kt", "infra/src/**/*.kt")
         ktlint()
     }
     kotlinGradle {
