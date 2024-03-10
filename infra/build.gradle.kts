@@ -17,7 +17,7 @@ tasks {
     jar {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest {
-            attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.infra.MainKt"
+            attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.infra.CdkAppKt"
         }
         from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     }
