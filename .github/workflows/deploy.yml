@@ -29,14 +29,10 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::642731005123:role/PokerDeployment
           aws-region: eu-west-2
-      - name: 🐘 Gradle build
+      - name: 🐘 Gradle publish
         uses: burrunan/gradle-cache-action@v1
         with:
-          arguments: jar
-          concurrent: true
-      - name: ⬆️ Publish Jar
-        run: |
-          aws s3 cp build/libs/planning-poker.jar s3://prehistoric-planning-poker/planning-poker.jar
+          arguments: uploadToS3
       - name: ☁️ Deploy CDK
         uses: development-and-dinosaurs/github-actions-aws-cdk@v1
         with:
