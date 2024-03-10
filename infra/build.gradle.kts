@@ -1,3 +1,6 @@
+import java.io.FileReader
+import java.util.Properties
+
 plugins {
     id("kotlin")
     id("com.diffplug.spotless")
