@@ -1,4 +1,4 @@
-package uk.co.developmentanddinosaurs.apps.poker.infra
+package uk.co.developmentanddinosaurs.apps.poker.infra.application
 
 import software.amazon.awscdk.services.ec2.CfnEIP
 import software.constructs.Construct
