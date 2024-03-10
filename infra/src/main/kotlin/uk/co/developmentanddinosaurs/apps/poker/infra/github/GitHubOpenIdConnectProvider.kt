@@ -9,7 +9,6 @@ import uk.co.developmentanddinosaurs.apps.poker.infra.config.Configuration
  * OpenIdConnectProvider for GitHub Actions.
  */
 class GitHubOpenIdConnectProvider(private val scope: Construct) {
-
     /**
      * Creates the [OpenIdConnectProvider] for GitHub Actions.
      *

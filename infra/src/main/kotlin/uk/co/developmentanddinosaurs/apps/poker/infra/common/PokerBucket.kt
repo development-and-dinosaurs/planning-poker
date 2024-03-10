@@ -13,7 +13,6 @@ import uk.co.developmentanddinosaurs.apps.poker.infra.config.Configuration
  * S3 bucket that contains the Poker application.
  */
 class PokerBucket(private val scope: Construct) {
-
     /**
      * Creates a [Bucket] that is used to store the Poker application.
      *
