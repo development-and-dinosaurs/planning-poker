@@ -10,9 +10,10 @@ import io.ktor.server.websocket.webSocket
 import uk.co.developmentanddinosaurs.apps.poker.application.extensions.respondCss
 import uk.co.developmentanddinosaurs.apps.poker.application.html.css.style
 import uk.co.developmentanddinosaurs.apps.poker.application.rooms.RoomRepository
+import uk.co.developmentanddinosaurs.apps.poker.application.rooms.RoomRepositoryConfig
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
 
-private val controller = PokerAppController(RoomRepository(NameGenerator()))
+private val controller = PokerAppController(RoomRepository(NameGenerator(), RoomRepositoryConfig()))
 
 /**
  * Apply routing logic to the web server.
