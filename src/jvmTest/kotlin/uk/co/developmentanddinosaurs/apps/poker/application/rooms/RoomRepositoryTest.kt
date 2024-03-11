@@ -10,11 +10,13 @@ import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerat
 
 class RoomRepositoryTest : StringSpec({
     val nameGenerator = mockk<NameGenerator>()
-    var roomRepository = RoomRepository(nameGenerator)
+    val config = mockk<RoomRepositoryConfig>()
+    var roomRepository = RoomRepository(nameGenerator, config)
 
     beforeEach {
         every { nameGenerator.generateName() } returnsMany listOf("TestRoom", "TestRoom", "TestRoom2")
-        roomRepository = RoomRepository(nameGenerator)
+        every { config.deletionDelayMillis } returns 1
+        roomRepository = RoomRepository(nameGenerator, config)
     }
 
     "Can create room" {
@@ -28,6 +30,35 @@ class RoomRepositoryTest : StringSpec({
 
         val retrievedRoom = roomRepository.getRoom(room.id)
 
+        retrievedRoom shouldBe room
+    }
+
+    "Removes room after a delay" {
+        val room = roomRepository.createRoom()
+
+        roomRepository.removeRoom(room.id)
+        Thread.sleep(10)
+
+        shouldThrow<RoomDoesNotExistException> { roomRepository.getRoom(room.id) }
+    }
+
+    "Room still exists before delayed deletion" {
+        val room = roomRepository.createRoom()
+
+        roomRepository.removeRoom(room.id)
+
+        val retrievedRoom = roomRepository.getRoom(room.id)
+        retrievedRoom shouldBe room
+    }
+
+    "Retrieving a room pending deletion cancels deletion of the room" {
+        val room = roomRepository.createRoom()
+        roomRepository.removeRoom(room.id)
+
+        roomRepository.getRoom(room.id)
+
+        Thread.sleep(10)
+        val retrievedRoom = roomRepository.getRoom(room.id)
         retrievedRoom shouldBe room
     }
 
