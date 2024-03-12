@@ -35,7 +35,7 @@ class PokerEc2(private val scope: Construct) {
         val userData = UserData.forLinux()
         userData.addCommands("sudo yum install -y java-17-amazon-corretto-headless")
         userData.addS3DownloadCommand(download(PokerBucket(scope).bucketReference().bucketName, Configuration.jar))
-        userData.addCommands("sudo java -jar /app/${Configuration.jar} &")
+        userData.addCommands("sudo java -jar /app/planning-poker.jar &")
         val multipartUserData = MultipartUserData()
         multipartUserData.addUserDataPart(initConfig)
         multipartUserData.addUserDataPart(userData)
@@ -46,7 +46,7 @@ class PokerEc2(private val scope: Construct) {
         bucket: String,
         key: String,
     ): S3DownloadOptions {
-        return S3DownloadOptions.builder().bucket(Bucket.fromBucketName(scope, "bucket", bucket)).localFile("/app/$key")
+        return S3DownloadOptions.builder().bucket(Bucket.fromBucketName(scope, "bucket", bucket)).localFile("/app/planning-poker.jar")
             .bucketKey(key).build()
     }
 }
