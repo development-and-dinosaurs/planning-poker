@@ -130,6 +130,6 @@ tasks {
     register<Exec>("uploadToS3") {
         dependsOn(jar)
         val bucket = Properties().apply { load(FileReader("infra/src/main/resources/infra.properties")) }.getProperty("bucket-name")
-        commandLine("aws", "s3", "cp", jar.get().outputs.files.singleFile, "s3://$bucket/planning-poker.jar")
+        commandLine("aws", "s3", "cp", jar.get().outputs.files.singleFile, "s3://$bucket")
     }
 }

@@ -14,6 +14,7 @@ import software.amazon.awscdk.services.iam.Role
 import software.amazon.awscdk.services.s3.Bucket
 import software.constructs.Construct
 import uk.co.developmentanddinosaurs.apps.poker.infra.common.PokerBucket
+import uk.co.developmentanddinosaurs.apps.poker.infra.config.Configuration
 
 class PokerEc2(private val scope: Construct) {
     fun instance(): Instance {
@@ -33,8 +34,8 @@ class PokerEc2(private val scope: Construct) {
         initConfig.addCommands("- [scripts-user, always]")
         val userData = UserData.forLinux()
         userData.addCommands("sudo yum install -y java-17-amazon-corretto-headless")
-        userData.addS3DownloadCommand(download(PokerBucket(scope).bucketReference().bucketName, "planning-poker.jar"))
-        userData.addCommands("sudo java -jar /app/planning-poker.jar &")
+        userData.addS3DownloadCommand(download(PokerBucket(scope).bucketReference().bucketName, Configuration.jar))
+        userData.addCommands("sudo java -jar /app/${Configuration.jar} &")
         val multipartUserData = MultipartUserData()
         multipartUserData.addUserDataPart(initConfig)
         multipartUserData.addUserDataPart(userData)
