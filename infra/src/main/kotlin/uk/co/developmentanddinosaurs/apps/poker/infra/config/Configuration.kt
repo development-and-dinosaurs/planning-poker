@@ -20,4 +20,5 @@ object Configuration {
     val githubRepository: String =
         properties.getProperty("github-repository")
             ?: throw ConfigException("No GitHub repository found. Specify github-repository in infra.properties")
+    val jar: String = Configuration::class.java.getResourceAsStream("/jar-to-upload").bufferedReader().readText()
 }
