@@ -26,9 +26,11 @@ tasks {
         from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     }
     register("writeProjectJarFilename") {
-        val content = rootProject.tasks.jar.get().outputs.files.singleFile.name
-        val output = File(project.layout.buildDirectory.get().asFile, "resources/main/jar-to-upload")
-        output.parentFile.mkdirs()
-        output.writeText(content)
+        doLast {
+            val content = rootProject.tasks.jar.get().outputs.files.singleFile.name
+            val output = File(project.layout.buildDirectory.get().asFile, "resources/main/jar-to-upload")
+            output.parentFile.mkdirs()
+            output.writeText(content)
+        }
     }
 }
