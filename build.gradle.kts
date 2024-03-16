@@ -66,12 +66,12 @@ kotlin {
                 implementation("io.ktor:ktor-server-sessions:$ktorVersion")
                 implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-server-websockets:$ktorVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.710")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.714")
             }
         }
         val jvmTest by getting {
             dependencies {
-                implementation("io.kotest:kotest-runner-junit5:5.8.0")
+                implementation("io.kotest:kotest-runner-junit5:5.8.1")
                 implementation("io.mockk:mockk:1.13.10")
             }
         }
