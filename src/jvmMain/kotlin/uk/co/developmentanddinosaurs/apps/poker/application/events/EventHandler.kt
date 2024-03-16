@@ -17,11 +17,11 @@ class EventHandler(private val room: Room) {
             }
 
             "revealVotes" -> {
-                room.revealVotes()
+                room.revealVotes(player)
             }
 
             "clearVotes" -> {
-                room.clearVotes()
+                room.clearVotes(player)
             }
 
             "catMode" -> {
