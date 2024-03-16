@@ -8,6 +8,6 @@ class RoomRepositoryConfigTest : StringSpec({
     "Can read deletion delay from properties" {
         val config = RoomRepositoryConfig()
 
-        config.deletionDelayMillis shouldBe 600000
+        config.deletionDelayMillis shouldBe 3600000
     }
 })
