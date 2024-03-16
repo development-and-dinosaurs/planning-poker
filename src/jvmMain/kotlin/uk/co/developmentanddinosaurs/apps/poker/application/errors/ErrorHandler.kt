@@ -10,7 +10,6 @@ import uk.co.developmentanddinosaurs.apps.poker.application.html.pages.serverErr
 import uk.co.developmentanddinosaurs.apps.poker.application.rooms.RoomDoesNotExistException
 
 class ErrorHandler {
-
     private val log = LoggerFactory.getLogger(javaClass)
 
     suspend fun handle(
