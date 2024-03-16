@@ -33,6 +33,7 @@ class Room(val id: String) {
         players.computeIfAbsent(player.id) { player }
         val sockets = playerSockets.computeIfAbsent(player.id) { CopyOnWriteArrayList() }
         sockets.add(socket)
+        log.info("Player [${player.name}] entered room [$id]")
         broadcastPlayers()
     }
 
@@ -45,6 +46,7 @@ class Room(val id: String) {
 
         if (sockets.isNullOrEmpty()) {
             players.remove(player.id)
+            log.info("Player [${player.name}] left room [$id]")
         }
         broadcastPlayers()
     }
@@ -56,19 +58,22 @@ class Room(val id: String) {
         val roomPlayer = players[player.id] ?: return
         roomPlayer.vote = vote
         roomPlayer.voted = true
+        log.info("Player [${player.name}] voted")
         broadcastPlayers()
     }
 
-    suspend fun revealVotes() {
+    suspend fun revealVotes(player: Player) {
         broadcastVotes()
         broadcastStats()
+        log.info("Player [${player.name}] revealed the votes")
     }
 
-    suspend fun clearVotes() {
+    suspend fun clearVotes(player: Player) {
         players.values.forEach {
             it.vote = Vote.HIDDEN
             it.voted = false
         }
+        log.info("Player [${player.name}] cleared the votes")
         broadcastPlayers()
         broadcastReset()
     }
@@ -76,6 +81,7 @@ class Room(val id: String) {
     suspend fun catMode(player: Player) {
         val roomPlayer = players[player.id] ?: return
         roomPlayer.catMode = true
+        log.info("Player [${player.name}] turned on cat mode")
         broadcastPlayers()
     }
 
