@@ -1,6 +1,3 @@
-import java.io.FileReader
-import java.util.Properties
-
 plugins {
     id("kotlin")
     id("com.diffplug.spotless")
@@ -13,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation("software.amazon.awscdk:aws-cdk-lib:2.131.0")
+    implementation("software.amazon.awscdk:aws-cdk-lib:2.133.0")
 }
 
 tasks {

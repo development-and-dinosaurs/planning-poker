@@ -30,7 +30,7 @@ class EventHandlerTest : StringSpec({
 
         eventHandler.handle(player, event)
 
-        coVerify { room.revealVotes() }
+        coVerify { room.revealVotes(player) }
     }
 
     "handles clear votes event" {
@@ -39,6 +39,6 @@ class EventHandlerTest : StringSpec({
 
         eventHandler.handle(player, event)
 
-        coVerify { room.clearVotes() }
+        coVerify { room.clearVotes(player) }
     }
 })
