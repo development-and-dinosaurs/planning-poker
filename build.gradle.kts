@@ -66,7 +66,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-sessions:$ktorVersion")
                 implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-server-websockets:$ktorVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.718")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.722")
             }
         }
         val jvmTest by getting {
