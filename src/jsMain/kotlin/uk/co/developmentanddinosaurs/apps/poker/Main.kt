@@ -34,6 +34,7 @@ fun main() {
         setUpRoomClickListeners()
         setUpCardClickListeners()
         setUpCatMode()
+        activateCatMode()
         MainScope().launch {
             initialiseWebSocketConnection()
         }

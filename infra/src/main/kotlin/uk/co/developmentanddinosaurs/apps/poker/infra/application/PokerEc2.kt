@@ -4,6 +4,7 @@ import software.amazon.awscdk.services.ec2.Instance
 import software.amazon.awscdk.services.ec2.InstanceClass
 import software.amazon.awscdk.services.ec2.InstanceSize
 import software.amazon.awscdk.services.ec2.InstanceType
+import software.amazon.awscdk.services.ec2.KeyPair
 import software.amazon.awscdk.services.ec2.MachineImage
 import software.amazon.awscdk.services.ec2.MultipartUserData
 import software.amazon.awscdk.services.ec2.S3DownloadOptions
@@ -22,9 +23,15 @@ class PokerEc2(private val scope: Construct) {
             .instanceType(InstanceType.of(InstanceClass.T2, InstanceSize.MICRO))
             .role(Role.fromRoleName(scope, "PlanningPokerApplication", "PlanningPokerApplication"))
             .machineImage(MachineImage.latestAmazonLinux2023()).vpc(PokerVpc.default(scope))
-            .vpcSubnets(SubnetSelection.builder().subnetType(SubnetType.PUBLIC).build()).keyName("planning-poker")
+            .vpcSubnets(SubnetSelection.builder().subnetType(SubnetType.PUBLIC).build()).keyPair(keyPair())
             .securityGroup(PokerSecurityGroup(scope).securityGroup()).userData(userData())
             .associatePublicIpAddress(true).build()
+    }
+
+    private fun keyPair(): KeyPair {
+        return KeyPair.Builder.create(scope, "PlanningPokerKeyPair")
+            .keyPairName("planning-poker")
+            .build()
     }
 
     private fun userData(): UserData {
@@ -46,7 +53,8 @@ class PokerEc2(private val scope: Construct) {
         bucket: String,
         key: String,
     ): S3DownloadOptions {
-        return S3DownloadOptions.builder().bucket(Bucket.fromBucketName(scope, "bucket", bucket)).localFile("/app/planning-poker.jar")
+        return S3DownloadOptions.builder().bucket(Bucket.fromBucketName(scope, "bucket", bucket))
+            .localFile("/app/planning-poker.jar")
             .bucketKey(key).build()
     }
 }
