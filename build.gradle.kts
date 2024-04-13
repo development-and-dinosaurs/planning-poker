@@ -39,7 +39,7 @@ kotlin {
         }
     }
     sourceSets {
-        val ktorVersion = "2.3.9"
+        val ktorVersion = "2.3.10"
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
@@ -57,7 +57,7 @@ kotlin {
         val jsTest by getting
         val jvmMain by getting {
             dependencies {
-                implementation("ch.qos.logback:logback-classic:1.5.3")
+                implementation("ch.qos.logback:logback-classic:1.5.5")
                 implementation("io.ktor:ktor-network-tls-certificates:$ktorVersion")
                 implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
                 implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
