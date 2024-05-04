@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation("software.amazon.awscdk:aws-cdk-lib:2.138.0")
+    implementation("software.amazon.awscdk:aws-cdk-lib:2.140.0")
 }
 
 tasks {
