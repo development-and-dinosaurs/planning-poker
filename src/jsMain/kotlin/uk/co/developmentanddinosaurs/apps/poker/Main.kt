@@ -36,7 +36,6 @@ fun main() {
         setUpCardClickListeners()
         checkChristmas()
         setUpCatMode()
-        activateCatMode()
         MainScope().launch {
             initialiseWebSocketConnection()
         }
