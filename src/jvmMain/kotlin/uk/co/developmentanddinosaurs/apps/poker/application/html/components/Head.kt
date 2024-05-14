@@ -6,6 +6,7 @@ import kotlinx.html.link
 import kotlinx.html.meta
 import kotlinx.html.script
 import kotlinx.html.title
+import uk.co.developmentanddinosaurs.apps.poker.application.Configuration
 
 fun HTML.head(title: String) =
     run {
@@ -16,7 +17,7 @@ fun HTML.head(title: String) =
             }
             link {
                 rel = "stylesheet"
-                href = "/style.css"
+                href = "/style.css?v=${Configuration.version}"
             }
             link {
                 rel = "icon"
@@ -24,7 +25,7 @@ fun HTML.head(title: String) =
             }
             script {
                 type = "text/javascript"
-                src = "/planning-poker.js"
+                src = "/planning-poker.js?v=${Configuration.version}"
             }
             script {
                 type = "text/javascript"
