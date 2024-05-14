@@ -5,8 +5,8 @@ import java.util.Properties
 plugins {
     application
     id("com.diffplug.spotless") version "6.25.0"
-    kotlin("multiplatform") version "1.9.23"
-    kotlin("plugin.serialization") version "1.9.23"
+    kotlin("multiplatform") version "1.9.24"
+    kotlin("plugin.serialization") version "1.9.24"
     id("uk.co.developmentanddinosaurs.git-versioner") version "2.0.1"
 }
 
@@ -39,7 +39,7 @@ kotlin {
         }
     }
     sourceSets {
-        val ktorVersion = "2.3.10"
+        val ktorVersion = "2.3.11"
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
@@ -49,7 +49,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.8.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.8.1")
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
                 implementation("io.ktor:ktor-client-websockets:$ktorVersion")
             }
@@ -71,7 +71,7 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation("io.kotest:kotest-runner-junit5:5.8.1")
+                implementation("io.kotest:kotest-runner-junit5:5.9.0")
                 implementation("io.mockk:mockk:1.13.10")
             }
         }
