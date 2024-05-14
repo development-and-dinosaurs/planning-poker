@@ -121,6 +121,7 @@ tasks {
         classpath(named("jvmJar"))
     }
     named<Jar>("jvmJar") {
+        dependsOn(named("writeProjectVersion"))
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest {
             attributes["Main-Class"] = "uk.co.developmentanddinosaurs.apps.poker.application.PokerAppKt"
@@ -131,5 +132,13 @@ tasks {
         dependsOn(jar)
         val bucket = Properties().apply { load(FileReader("infra/src/main/resources/infra.properties")) }.getProperty("bucket-name")
         commandLine("aws", "s3", "cp", jar.get().outputs.files.singleFile, "s3://$bucket")
+    }
+    register("writeProjectVersion") {
+        doLast {
+            val content = project.version.toString()
+            val output = File(project.layout.buildDirectory.get().asFile, "processedResources/jvm/main/version")
+            output.parentFile.mkdirs()
+            output.writeText(content)
+        }
     }
 }
