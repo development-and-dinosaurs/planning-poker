@@ -37,7 +37,6 @@ fun main() {
         checkChristmas()
         checkValentines()
         setUpCatMode()
-        activateCatMode()
         MainScope().launch {
             initialiseWebSocketConnection()
         }
