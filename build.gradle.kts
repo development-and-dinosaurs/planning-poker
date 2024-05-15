@@ -49,7 +49,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.8.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.8.1")
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
                 implementation("io.ktor:ktor-client-websockets:$ktorVersion")
             }
