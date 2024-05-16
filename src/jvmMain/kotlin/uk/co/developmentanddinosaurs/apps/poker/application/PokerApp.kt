@@ -6,6 +6,7 @@ import io.ktor.server.engine.connector
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.engine.sslConnector
 import io.ktor.server.netty.Netty
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk
 import uk.co.developmentanddinosaurs.apps.poker.application.errors.errorHandling
 import uk.co.developmentanddinosaurs.apps.poker.application.plugins.plugins
 import uk.co.developmentanddinosaurs.apps.poker.application.routing.routing
@@ -33,5 +34,6 @@ fun main() {
             module(Application::routing)
             module(Application::errorHandling)
         }
+    AutoConfiguredOpenTelemetrySdk.initialize().openTelemetrySdk
     embeddedServer(Netty, environment).start(wait = true)
 }
