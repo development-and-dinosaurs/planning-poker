@@ -5,9 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.slf4j.LoggerFactory
+import uk.co.developmentanddinosaurs.apps.poker.application.observability.Observability
 import uk.co.developmentanddinosaurs.apps.poker.application.services.NameGenerator
-import java.time.Instant
 
 class RoomRepository(
     private val nameGenerator: NameGenerator,
@@ -16,13 +15,10 @@ class RoomRepository(
     private val rooms = mutableMapOf<String, Room>()
     private val roomsPendingRemoval = mutableMapOf<String, Job>()
 
-    private val log = LoggerFactory.getLogger(javaClass)
-
     fun createRoom(): Room {
         val name = generateUniqueName()
         val room = Room(name)
         rooms[room.id] = room
-        log.info("Created room [$name]")
         return room
     }
 
@@ -36,8 +32,8 @@ class RoomRepository(
 
     fun getRoom(roomId: String): Room {
         if (roomsPendingRemoval.containsKey(roomId)) {
-            log.info("Cancelling scheduled deletion of [$roomId]")
             roomsPendingRemoval[roomId]?.cancel()
+            Observability.roomDeletionCancelled(roomId)
         }
         return rooms[roomId] ?: throw RoomDoesNotExistException(roomId)
     }
@@ -45,10 +41,10 @@ class RoomRepository(
     fun removeRoom(roomId: String) {
         roomsPendingRemoval[roomId] =
             CoroutineScope(Dispatchers.Default).launch {
-                log.info("Room [$roomId] scheduled for deletion at ${Instant.now().plusMillis(config.deletionDelayMillis)}")
+                Observability.roomDeletionScheduled(roomId)
                 delay(config.deletionDelayMillis)
                 rooms.remove(roomId)
-                log.info("Room [$roomId] deleted")
+                Observability.roomDeleted(roomId)
             }
     }
 }

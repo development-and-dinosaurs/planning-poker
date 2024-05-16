@@ -7,7 +7,6 @@ import io.ktor.websocket.close
 import kotlinx.coroutines.channels.ClosedSendChannelException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.slf4j.LoggerFactory
 import poker.events.Event
 import poker.events.PlayersEvent
 import poker.events.ResetEvent
@@ -16,12 +15,15 @@ import poker.models.Average
 import poker.models.Player
 import poker.models.Stats
 import poker.models.Vote
+import uk.co.developmentanddinosaurs.apps.poker.application.observability.Observability
 import uk.co.developmentanddinosaurs.apps.poker.application.statistics.Statistics
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 class Room(val id: String) {
-    private val log = LoggerFactory.getLogger(this.javaClass)
+    init {
+        Observability.roomCreated(id)
+    }
 
     private val players = ConcurrentHashMap<String, Player>()
     private val playerSockets = ConcurrentHashMap<String, MutableList<WebSocketSession>>()
@@ -33,7 +35,7 @@ class Room(val id: String) {
         players.computeIfAbsent(player.id) { player }
         val sockets = playerSockets.computeIfAbsent(player.id) { CopyOnWriteArrayList() }
         sockets.add(socket)
-        log.info("Player [${player.name}] entered room [$id]")
+        Observability.roomJoined(id, player.name)
         broadcastPlayers()
     }
 
@@ -46,8 +48,8 @@ class Room(val id: String) {
 
         if (sockets.isNullOrEmpty()) {
             players.remove(player.id)
-            log.info("Player [${player.name}] left room [$id]")
         }
+        Observability.roomLeft(id, player.name)
         broadcastPlayers()
     }
 
@@ -58,14 +60,14 @@ class Room(val id: String) {
         val roomPlayer = players[player.id] ?: return
         roomPlayer.vote = vote
         roomPlayer.voted = true
-        log.info("Player [${player.name}] voted")
+        Observability.playerVoted(player.name, vote.name)
         broadcastPlayers()
     }
 
     suspend fun revealVotes(player: Player) {
         broadcastVotes()
         broadcastStats()
-        log.info("Player [${player.name}] revealed the votes")
+        Observability.votesRevealed(player.name)
     }
 
     suspend fun clearVotes(player: Player) {
@@ -73,7 +75,7 @@ class Room(val id: String) {
             it.vote = Vote.HIDDEN
             it.voted = false
         }
-        log.info("Player [${player.name}] cleared the votes")
+        Observability.votesCleared(player.name)
         broadcastPlayers()
         broadcastReset()
     }
@@ -81,7 +83,7 @@ class Room(val id: String) {
     suspend fun catMode(player: Player) {
         val roomPlayer = players[player.id] ?: return
         roomPlayer.catMode = true
-        log.info("Player [${player.name}] turned on cat mode")
+        Observability.catModeActivated(player.name)
         broadcastPlayers()
     }
 
@@ -116,7 +118,6 @@ class Room(val id: String) {
             try {
                 send(socket, event)
             } catch (e: Exception) {
-                log.error("Failed to send event", e)
                 try {
                     socket.close(CloseReason(CloseReason.Codes.PROTOCOL_ERROR, "Error sending message"))
                 } catch (ignore: ClosedSendChannelException) {
