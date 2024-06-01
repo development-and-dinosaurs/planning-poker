@@ -5,8 +5,8 @@ import java.util.Properties
 plugins {
     application
     id("com.diffplug.spotless") version "6.25.0"
-    kotlin("multiplatform") version "1.9.24"
-    kotlin("plugin.serialization") version "1.9.24"
+    kotlin("multiplatform") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
     id("uk.co.developmentanddinosaurs.git-versioner") version "2.0.1"
 }
 
@@ -17,6 +17,7 @@ repositories {
 }
 
 kotlin {
+    jvmToolchain(17)
     js(IR) {
         binaries.executable()
         browser {
@@ -32,7 +33,6 @@ kotlin {
         }
     }
     jvm {
-        jvmToolchain(17)
         withJava()
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
@@ -76,8 +76,8 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation("io.kotest:kotest-runner-junit5:5.8.1")
-                implementation("io.mockk:mockk:1.13.10")
+                implementation("io.kotest:kotest-runner-junit5:5.9.0")
+                implementation("io.mockk:mockk:1.13.11")
             }
         }
     }
