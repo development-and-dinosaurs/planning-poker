@@ -2,11 +2,12 @@
 
 [![Prehistoric Planning Poker](poker-logo.png 'Prehistoric Planning Poker logo')](https://poker.developmentanddinosaurs.co.uk/)
 
-A dinosaur themed planning poker application for agile refinement ceremonies.
+The coolest dinosaur themed planning poker application for agile refinement 
+ceremonies.
 
-Head
-to [https://poker.developmentanddinosaurs.co.uk/](https://poker.developmentanddinosaurs.co.uk/)
-to see it in action, or build it yourself!
+Head to 
+[https://poker.developmentanddinosaurs.co.uk/](https://poker.developmentanddinosaurs.co.uk/)
+to see it in action, or you build it yourself instead!
 
 ## Self Hosting
 
@@ -14,7 +15,9 @@ Prehistoric Planning Poker is simple to self-host. The entire application is
 distilled into a single executable jar file that can be run anywhere with a JVM.
 
 Simply build the application from source using the included Gradle wrapper, and
-then run the resulting jar file.
+then run the resulting jar file. You could probably even put it in Docker or 
+something neat like that! Oh, hey maybe I could provide a Docker image, that
+would be cool.
 
 ### Build from source
 
@@ -41,7 +44,7 @@ resources are deployed using the CDK, though some are references to
 infrastructure created manually.
 
 All infrastructure fits within AWS free-tier limits, so you can try it out for
-free.
+free. For 12 months anyway. 
 
 ## Hosting Elsewhere
 
@@ -50,15 +53,16 @@ out of the picture, but you should be able to find something suitable in Google
 Cloud, Microsoft Azure, Oracle Cloud, or a VPS.
 
 There are no explicit instructions for this - but it will be very similar to
-self-hosting. Just on someone else's server.
+self-hosting. Just on someone else's server. _Cloud Computing_™.
 
 ## Contributing
 
 Contributions are welcome but not expected. The ethos of this project is that
-contributions should be a combination of the following:
+contributions should be at least one of the following (in order of importance):
 
+- Silly
 - Fun
 - Useful
 
-All contributions should be written in Kotlin where possible - especially where
-doing something else would be smarter.
+All contributions should be written in Kotlin where possible - _especially_ 
+where doing something else would be smarter.
