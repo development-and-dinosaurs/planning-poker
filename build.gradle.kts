@@ -71,7 +71,7 @@ kotlin {
                 implementation("io.opentelemetry:opentelemetry-sdk")
                 implementation("io.opentelemetry:opentelemetry-exporter-otlp")
                 implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.729")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.754")
             }
         }
         val jvmTest by getting {
