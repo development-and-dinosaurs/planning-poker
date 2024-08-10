@@ -5,8 +5,8 @@ import java.util.Properties
 plugins {
     application
     id("com.diffplug.spotless") version "6.25.0"
-    kotlin("multiplatform") version "2.0.0"
-    kotlin("plugin.serialization") version "2.0.0"
+    kotlin("multiplatform") version "2.0.10"
+    kotlin("plugin.serialization") version "2.0.10"
     id("uk.co.developmentanddinosaurs.git-versioner") version "2.0.1"
 }
 
@@ -39,10 +39,10 @@ kotlin {
         }
     }
     sourceSets {
-        val ktorVersion = "2.3.11"
+        val ktorVersion = "2.3.12"
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
             }
         }
         val commonTest by getting
@@ -66,7 +66,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-sessions:$ktorVersion")
                 implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-server-websockets:$ktorVersion")
-                implementation(project.dependencies.platform("io.opentelemetry:opentelemetry-bom:1.38.0"))
+                implementation(project.dependencies.platform("io.opentelemetry:opentelemetry-bom:1.41.0"))
                 implementation("io.opentelemetry:opentelemetry-api")
                 implementation("io.opentelemetry:opentelemetry-sdk")
                 implementation("io.opentelemetry:opentelemetry-exporter-otlp")
@@ -76,8 +76,8 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
-                implementation("io.kotest:kotest-runner-junit5:5.9.0")
-                implementation("io.mockk:mockk:1.13.11")
+                implementation("io.kotest:kotest-runner-junit5:5.9.1")
+                implementation("io.mockk:mockk:1.13.12")
             }
         }
     }
